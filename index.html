@@ -1,1435 +1,1337 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OncoGuía Pro v8.0 - OncoTech</title>
+    <title>OncoGuía Pro v6.0 - Sistema Médico Completo OncoTech</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Calibri', 'Arial', sans-serif; }
+        .medical-font { font-family: 'Calibri', 'Arial', sans-serif; }
+        .theme-oncotech { --primary: #dc2626; --secondary: #374151; }
+        .theme-blue { --primary: #2563eb; --secondary: #1e40af; }
+        .theme-green { --primary: #059669; --secondary: #047857; }
+        .theme-purple { --primary: #7c3aed; --secondary: #5b21b6; }
+        .theme-dark { --primary: #374151; --secondary: #111827; }
+        .theme-sunset { --primary: #ea580c; --secondary: #dc2626; }
         
-        * {
-            font-family: 'Calibri', 'Arial', 'Inter', sans-serif;
-        }
+        .primary-bg { background-color: var(--primary); }
+        .primary-text { color: var(--primary); }
+        .secondary-bg { background-color: var(--secondary); }
+        .secondary-text { color: var(--secondary); }
         
-        .dark {
-            --bg-primary: #1a1a1a;
-            --bg-secondary: #2d2d2d;
-            --bg-tertiary: #404040;
-            --text-primary: #ffffff;
-            --text-secondary: #e5e5e5;
-            --border-color: #4a4a4a;
-            --accent-color: #dc2626;
-        }
-        
-        .light {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8f9fa;
-            --bg-tertiary: #e9ecef;
-            --text-primary: #212529;
-            --text-secondary: #6c757d;
-            --border-color: #dee2e6;
-            --accent-color: #dc2626;
-        }
-        
-        .theme-bg-primary { background-color: var(--bg-primary); }
-        .theme-bg-secondary { background-color: var(--bg-secondary); }
-        .theme-bg-tertiary { background-color: var(--bg-tertiary); }
-        .theme-text-primary { color: var(--text-primary); }
-        .theme-text-secondary { color: var(--text-secondary); }
-        .theme-border { border-color: var(--border-color); }
-        .theme-accent { background-color: var(--accent-color); }
-        
-        .preview-container {
+        .preview-document {
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             min-height: 600px;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            overflow-y: auto;
-            background: white;
-            padding: 20px;
+            font-family: 'Calibri', 'Arial', sans-serif;
         }
         
-        .document-preview {
-            max-width: 100%;
-            margin: 0 auto;
-            background: white;
-            color: black;
-            line-height: 1.6;
-        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
         
-        .document-preview h1 { font-size: 24px; font-weight: bold; margin-bottom: 16px; }
-        .document-preview h2 { font-size: 20px; font-weight: bold; margin: 16px 0 12px 0; }
-        .document-preview h3 { font-size: 16px; font-weight: bold; margin: 12px 0 8px 0; }
-        .document-preview p { margin-bottom: 8px; }
-        .document-preview ul { margin-left: 20px; margin-bottom: 12px; }
-        .document-preview li { margin-bottom: 4px; }
-        
-        .fade-in {
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .input-field {
-            transition: all 0.2s ease;
-        }
-        
-        .input-field:focus {
-            transform: scale(1.02);
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+         {
+            .no-print { display: none !important; }
+            body { font-family: 'Calibri', 'Arial', sans-serif; }
         }
     </style>
 </head>
-<body class="light theme-bg-primary theme-text-primary min-h-screen">
+<body class="bg-gray-50 theme-oncotech">
     <!-- Header -->
-    <header class="theme-bg-secondary border-b-4 border-red-600 shadow-lg">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <div class="flex items-center space-x-3">
-                        <img src="https://www.jotform.com/uploads/jeanp27/form_files/Logo%20para%20membrete.684c557f007857.92019324.png" alt="OncoTech Logo" class="h-12 w-auto">
-                        <div class="h-12 w-1 bg-gradient-to-b from-red-600 to-red-800 rounded"></div>
-                        <div>
-                            <h1 class="text-2xl font-bold theme-text-primary">OncoGuía Pro v8.0</h1>
-                            <p class="text-sm theme-text-secondary">Sistema de Documentos Médicos Oncológicos</p>
-                        </div>
-                    </div>
+    <header class="primary-bg text-white p-4 no-print">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <img src="https://www.jotform.com/uploads/jeanp27/form_files/Logo%20para%20membrete.684c557f007857.92019324.png" 
+                     alt="OncoTech" class="h-12 w-auto">
+                <div>
+                    <h1 class="text-2xl font-bold">OncoGuía Pro v6.0</h1>
+                    <p class="text-sm opacity-90">Sistema Médico Completo - OncoTech La Paz</p>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <div class="text-right text-sm theme-text-secondary">
-                        <div class="font-semibold">OncoTech - Centro de Oncología</div>
-                        <div>Normal Urbana 1367, Colonia Perla, La Paz, BCS</div>
-                        <div>Tel: (612) 129-71-71 | L-V 9:00-21:00</div>
-                        <div class="text-xs text-red-600">Solo con previa cita • No urgencias</div>
-                    </div>
-                    <select id="themeSelector" class="px-3 py-2 border theme-border rounded-lg theme-bg-tertiary theme-text-primary">
-                        <option value="light">Modo Claro</option>
-                        <option value="dark">Modo Oscuro</option>
-                    </select>
-                </div>
+            </div>
+            <div class="text-right text-sm">
+                <p>Normal Urbana 1367, Colonia Perla</p>
+                <p>La Paz, Baja California Sur</p>
+                <p>Tel: (612) 129.71.71</p>
+                <p class="text-xs opacity-75">L-V 9:00 AM - 9:00 PM | Solo con cita previa</p>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <div class="container mx-auto px-4 py-6">
+    <div class="container mx-auto p-4">
+        <!-- Theme Selector -->
+        <div class="bg-white rounded-lg p-4 mb-6 no-print">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold primary-text">
+                    <i class="fas fa-palette mr-2"></i>Personalización
+                </h3>
+                <select id="themeSelector" class="px-3 py-2 border border-gray-300 rounded-md">
+                    <option value="theme-oncotech">OncoTech Classic</option>
+                    <option value="theme-blue">Azul Médico</option>
+                    <option value="theme-green">Verde Salud</option>
+                    <option value="theme-purple">Púrpura Elegante</option>
+                    <option value="theme-dark">Modo Oscuro</option>
+                    <option value="theme-sunset">Sunset</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="bg-white rounded-lg mb-6 no-print">
+            <div class="flex border-b overflow-x-auto">
+                <button class="tab-btn px-6 py-3 font-medium text-sm whitespace-nowrap border-b-2 primary-text border-red-600 active" 
+                        data-tab="quimioterapia">
+                    <i class="fas fa-syringe mr-2"></i>Quimioterapia
+                </button>
+                <button class="tab-btn px-6 py-3 font-medium text-sm whitespace-nowrap border-b-2 border-transparent text-gray-500 hover:text-gray-700" 
+                        data-tab="recetas">
+                    <i class="fas fa-prescription-bottle mr-2"></i>Recetas
+                </button>
+                <button class="tab-btn px-6 py-3 font-medium text-sm whitespace-nowrap border-b-2 border-transparent text-gray-500 hover:text-gray-700" 
+                        data-tab="laboratorio">
+                    <i class="fas fa-vial mr-2"></i>Laboratorio
+                </button>
+                <button class="tab-btn px-6 py-3 font-medium text-sm whitespace-nowrap border-b-2 border-transparent text-gray-500 hover:text-gray-700" 
+                        data-tab="imagen">
+                    <i class="fas fa-x-ray mr-2"></i>Estudios de Imagen
+                </button>
+            </div>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            
             <!-- Left Panel - Forms -->
-            <div class="theme-bg-secondary rounded-lg shadow-lg p-6">
+            <div class="space-y-6">
                 
-                <!-- Patient Data -->
-                <div class="mb-6">
-                    <h2 class="text-xl font-bold theme-text-primary mb-4 flex items-center">
-                        <i class="fas fa-user-injured mr-2 text-red-600"></i>
-                        Datos del Paciente
-                    </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium theme-text-primary mb-1">Nombre Completo *</label>
-                            <input type="text" id="patientName" class="input-field w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" placeholder="Ej: María García López">
+                <!-- Tab 1: Quimioterapia -->
+                <div id="quimioterapia" class="tab-content active">
+                    <div class="bg-white rounded-lg p-6">
+                        <h2 class="text-xl font-bold primary-text mb-6">
+                            <i class="fas fa-syringe mr-2"></i>Generador de Quimioterapia
+                        </h2>
+
+                        <!-- Patient Data -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del Paciente</label>
+                                <input type="text" id="patientName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Edad (años)</label>
+                                <input type="number" id="age" min="0" max="120" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Sexo</label>
+                                <select id="gender" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                                    <option value="">Seleccionar</option>
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Femenino</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Peso (kg)</label>
+                                <input type="number" id="weight" step="0.1" min="20" max="200" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Estatura (cm)</label>
+                                <input type="number" id="height" min="100" max="250" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Creatinina (mg/dL)</label>
+                                <input type="number" id="creatinine" step="0.1" min="0.1" max="10" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium theme-text-primary mb-1">Edad (años) *</label>
-                            <input type="number" id="patientAge" class="input-field w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" min="0" max="120">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium theme-text-primary mb-1">Sexo *</label>
-                            <select id="patientGender" class="input-field w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary">
-                                <option value="">Seleccionar...</option>
-                                <option value="M">Masculino</option>
-                                <option value="F">Femenino</option>
+
+                        <!-- Chemotherapy Scheme -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Esquema de Quimioterapia</label>
+                            <select id="chemoScheme" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                                <option value="">Seleccionar esquema</option>
+                                <optgroup label="Mama - Adyuvante">
+                                    <option value="AC-T">AC-T (Doxorrubicina/Ciclofosfamida → Paclitaxel)</option>
+                                    <option value="AC">AC (Doxorrubicina/Ciclofosfamida)</option>
+                                    <option value="TCH">TCH (Docetaxel/Carboplatino/Trastuzumab)</option>
+                                </optgroup>
+                                <optgroup label="Anti-HER2 Terapias">
+                                    <option value="Trastuzumab-IV">Trastuzumab IV</option>
+                                    <option value="Trastuzumab-SC">Trastuzumab SC</option>
+                                    <option value="Pertuzumab">Pertuzumab IV</option>
+                                    <option value="T-DM1">T-DM1 (Kadcyla)</option>
+                                    <option value="T-DXd">T-DXd (Enhertu)</option>
+                                    <option value="Phesgo">Phesgo (Pertuzumab + Trastuzumab SC)</option>
+                                </optgroup>
+                                <optgroup label="Colorrectal">
+                                    <option value="FOLFOX">FOLFOX</option>
+                                    <option value="FOLFIRI">FOLFIRI</option>
+                                    <option value="FOLFIRI-Cetuximab">FOLFIRI + Cetuximab</option>
+                                    <option value="FOLFIRI-Bev">FOLFIRI + Bevacizumab</option>
+                                    <option value="CAPOX-Bev">CAPOX + Bevacizumab</option>
+                                    <option value="Gramont">Esquema Gramont</option>
+                                </optgroup>
+                                <optgroup label="Gástrico">
+                                    <option value="FLOT">FLOT</option>
+                                </optgroup>
+                                <optgroup label="Páncreas">
+                                    <option value="FOLFIRINOX">FOLFIRINOX</option>
+                                    <option value="Gemcitabina-Carboplatino">Gemcitabina + Carboplatino</option>
+                                </optgroup>
+                                <optgroup label="Testicular">
+                                    <option value="BEP">BEP</option>
+                                    <option value="EP">EP</option>
+                                </optgroup>
+                                <optgroup label="Agentes Únicos">
+                                    <option value="Paclitaxel-semanal">Paclitaxel semanal</option>
+                                    <option value="Docetaxel">Docetaxel</option>
+                                    <option value="Carboplatino">Carboplatino</option>
+                                    <option value="Cisplatino">Cisplatino</option>
+                                </optgroup>
                             </select>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium theme-text-primary mb-1">Peso (kg) *</label>
-                            <input type="number" id="patientWeight" class="input-field w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" min="20" max="300" step="0.1">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium theme-text-primary mb-1">Estatura (cm) *</label>
-                            <input type="number" id="patientHeight" class="input-field w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" min="100" max="250">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium theme-text-primary mb-1">Creatinina (mg/dL)</label>
-                            <input type="number" id="patientCreatinine" class="input-field w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" min="0.1" max="15" step="0.1">
-                        </div>
-                    </div>
-                    
-                    <!-- Automatic Calculations -->
-                    <div class="mt-4 p-3 theme-bg-tertiary rounded-lg">
-                        <h3 class="text-sm font-medium theme-text-primary mb-2">Cálculos Automáticos</h3>
-                        <div class="grid grid-cols-3 gap-4 text-sm">
-                            <div>
-                                <span class="theme-text-secondary">SC:</span>
-                                <span id="bsaValue" class="font-mono theme-text-primary">-- m²</span>
-                            </div>
-                            <div>
-                                <span class="theme-text-secondary">IMC:</span>
-                                <span id="bmiValue" class="font-mono theme-text-primary">-- kg/m²</span>
-                            </div>
-                            <div>
-                                <span class="theme-text-secondary">ClCr (CG):</span>
-                                <span id="crclValue" class="font-mono theme-text-primary">-- mL/min</span>
+
+                        <!-- Document Type -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Documento</label>
+                            <div class="flex space-x-4">
+                                <label class="flex items-center">
+                                    <input type="radio" name="docType" value="indicaciones" class="mr-2" checked>
+                                    <span>Indicaciones Médicas</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="docType" value="guia" class="mr-2">
+                                    <span>Guía para Paciente</span>
+                                </label>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Document Type Selector -->
-                <div class="mb-6">
-                    <h2 class="text-xl font-bold theme-text-primary mb-4 flex items-center">
-                        <i class="fas fa-file-medical mr-2 text-red-600"></i>
-                        Tipo de Documento
-                    </h2>
-                    <select id="documentType" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary text-lg">
-                        <option value="">Seleccione el tipo de documento...</option>
-                        <option value="chemotherapy">💊 Guía de Quimioterapia</option>
-                        <option value="prescription">📝 Receta Médica</option>
-                        <option value="laboratory">🧪 Solicitud de Laboratorio</option>
-                        <option value="imaging">📸 Solicitud de Imagen</option>
-                        <option value="instructions">📋 Indicaciones Médicas</option>
-                    </select>
-                </div>
+                <!-- Tab 2: Recetas -->
+                <div id="recetas" class="tab-content">
+                    <div class="bg-white rounded-lg p-6">
+                        <h2 class="text-xl font-bold primary-text mb-6">
+                            <i class="fas fa-prescription-bottle mr-2"></i>Generador de Recetas
+                        </h2>
 
-                <!-- Dynamic Content Area -->
-                <div id="dynamicContent" class="fade-in">
-                    <div class="text-center py-8 theme-text-secondary">
-                        <i class="fas fa-arrow-up text-4xl mb-4"></i>
-                        <p>Seleccione un tipo de documento para continuar</p>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del Paciente</label>
+                                    <input type="text" id="prescPatientName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Fecha</label>
+                                    <input type="date" id="prescDate" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                                </div>
+                            </div>
+
+                            <div id="medicationList" class="space-y-4">
+                                <div class="medication-item border border-gray-200 rounded-lg p-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Medicamento</label>
+                                            <input type="text" class="medication-name w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ej: Ondansetrón">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Presentación</label>
+                                            <input type="text" class="medication-presentation w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ej: 8 mg tabletas">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Cantidad</label>
+                                            <input type="text" class="medication-quantity w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ej: 30 tabletas">
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Indicaciones</label>
+                                        <textarea class="medication-instructions w-full px-3 py-2 border border-gray-300 rounded-md" rows="2" placeholder="Ej: Tomar 1 tableta cada 8 horas según necesidad para náusea"></textarea>
+                                    </div>
+                                    <button type="button" class="remove-medication mt-2 text-red-600 text-sm hover:text-red-800">
+                                        <i class="fas fa-trash mr-1"></i>Eliminar
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button type="button" id="addMedication" class="w-full py-2 px-4 bg-gray-100 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-200">
+                                <i class="fas fa-plus mr-2"></i>Agregar Medicamento
+                            </button>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Tab 3: Laboratorio -->
+                <div id="laboratorio" class="tab-content">
+                    <div class="bg-white rounded-lg p-6">
+                        <h2 class="text-xl font-bold primary-text mb-6">
+                            <i class="fas fa-vial mr-2"></i>Solicitud de Laboratorio
+                        </h2>
+
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del Paciente</label>
+                                    <input type="text" id="labPatientName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Fecha</label>
+                                    <input type="date" id="labDate" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Estudios Solicitados</label>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <label class="flex items-center"><input type="checkbox" class="lab-test mr-2" value="Hemograma completo"> Hemograma completo</label>
+                                    <label class="flex items-center"><input type="checkbox" class="lab-test mr-2" value="Química sanguínea (glucosa, urea, creatinina)"> Química sanguínea</label>
+                                    <label class="flex items-center"><input type="checkbox" class="lab-test mr-2" value="Electrolitos séricos (Na, K, Cl)"> Electrolitos séricos</label>
+                                    <label class="flex items-center"><input type="checkbox" class="lab-test mr-2" value="Pruebas de función hepática"> Función hepática</label>
+                                    <label class="flex items-center"><input type="checkbox" class="lab-test mr-2" value="Perfil de coagulación (TP, TTPa, INR)"> Coagulación</label>
+                                    <label class="flex items-center"><input type="checkbox" class="lab-test mr-2" value="Marcadores tumorales"> Marcadores tumorales</label>
+                                    <label class="flex items-center"><input type="checkbox" class="lab-test mr-2" value="Examen general de orina"> Examen de orina</label>
+                                    <label class="flex items-center"><input type="checkbox" class="lab-test mr-2" value="Proteínas totales y albúmina"> Proteínas/Albúmina</label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Indicaciones Especiales</label>
+                                <textarea id="labInstructions" class="w-full px-3 py-2 border border-gray-300 rounded-md" rows="3" placeholder="Ej: Ayuno de 12 horas para glucosa..."></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Diagnóstico/Indicación Clínica</label>
+                                <input type="text" id="labDiagnosis" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ej: Control pre-quimioterapia">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Estudios de Imagen -->
+                <div id="imagen" class="tab-content">
+                    <div class="bg-white rounded-lg p-6">
+                        <h2 class="text-xl font-bold primary-text mb-6">
+                            <i class="fas fa-x-ray mr-2"></i>Solicitud de Estudios de Imagen
+                        </h2>
+
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del Paciente</label>
+                                    <input type="text" id="imagePatientName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Fecha</label>
+                                    <input type="date" id="imageDate" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Estudio</label>
+                                <select id="imageType" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                                    <option value="">Seleccionar tipo</option>
+                                    <option value="Tomografía Computarizada (TC)">Tomografía Computarizada (TC)</option>
+                                    <option value="Resonancia Magnética (RM)">Resonancia Magnética (RM)</option>
+                                    <option value="Ultrasonido">Ultrasonido</option>
+                                    <option value="Radiografía">Radiografía</option>
+                                    <option value="PET-CT">PET-CT</option>
+                                    <option value="Gammagrafía">Gammagrafía</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Región Anatómica</label>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <label class="flex items-center"><input type="checkbox" class="image-region mr-2" value="Tórax"> Tórax</label>
+                                    <label class="flex items-center"><input type="checkbox" class="image-region mr-2" value="Abdomen"> Abdomen</label>
+                                    <label class="flex items-center"><input type="checkbox" class="image-region mr-2" value="Pelvis"> Pelvis</label>
+                                    <label class="flex items-center"><input type="checkbox" class="image-region mr-2" value="Cráneo"> Cráneo</label>
+                                    <label class="flex items-center"><input type="checkbox" class="image-region mr-2" value="Cuello"> Cuello</label>
+                                    <label class="flex items-center"><input type="checkbox" class="image-region mr-2" value="Extremidades"> Extremidades</label>
+                                    <label class="flex items-center"><input type="checkbox" class="image-region mr-2" value="Columna"> Columna</label>
+                                    <label class="flex items-center"><input type="checkbox" class="image-region mr-2" value="Tórax, Abdomen y Pelvis"> TAP (Tórax, Abdomen y Pelvis)</label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Contraste</label>
+                                <div class="flex space-x-4">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="contrast" value="Sin contraste" class="mr-2" checked>
+                                        <span>Sin contraste</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="contrast" value="Con contraste IV" class="mr-2">
+                                        <span>Con contraste IV</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="contrast" value="Con contraste oral" class="mr-2">
+                                        <span>Con contraste oral</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="contrast" value="Con contraste IV y oral" class="mr-2">
+                                        <span>Ambos contrastes</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div id="creatinineAlert" class="hidden bg-yellow-50 border border-yellow-200 rounded-md p-3">
+                                <div class="flex">
+                                    <i class="fas fa-exclamation-triangle text-yellow-400 mr-2 mt-1"></i>
+                                    <div>
+                                        <p class="text-sm text-yellow-800 font-medium">Creatinina requerida</p>
+                                        <p class="text-sm text-yellow-700">Este estudio requiere valor de creatinina sérica reciente (&lt; 48 horas).</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Indicación Clínica</label>
+                                <input type="text" id="imageDiagnosis" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ej: Estadificación oncológica, seguimiento post-tratamiento">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate Button -->
+                <div class="bg-white rounded-lg p-6 no-print">
+                    <button id="generateDocument" class="w-full primary-bg text-white py-3 px-6 rounded-md font-medium hover:opacity-90">
+                        <i class="fas fa-file-medical mr-2"></i>Generar Documento
+                    </button>
+                </div>
             </div>
 
             <!-- Right Panel - Preview -->
-            <div class="theme-bg-secondary rounded-lg shadow-lg p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-bold theme-text-primary flex items-center">
-                        <i class="fas fa-eye mr-2 text-red-600"></i>
-                        Previsualización del Documento
-                    </h2>
-                    <div class="flex space-x-2">
-                        <button id="generateBtn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                            <i class="fas fa-magic mr-2"></i>Generar
-                        </button>
-                        <button id="pdfBtn" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                            <i class="fas fa-file-pdf mr-2"></i>PDF
-                        </button>
-                        <button id="emailBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                            <i class="fas fa-envelope mr-2"></i>Email
-                        </button>
-                        <button id="jsonBtn" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                            <i class="fas fa-code mr-2"></i>JSON
-                        </button>
+            <div>
+                <div class="bg-white rounded-lg p-4 no-print mb-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold primary-text">
+                            <i class="fas fa-eye mr-2"></i>Previsualización
+                        </h3>
+                        <div class="flex space-x-2">
+                            <button id="emailDocument" class="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700">
+                                <i class="fas fa-envelope mr-1"></i>Email
+                            </button>
+                            <button id="exportJSON" class="px-4 py-2 bg-gray-600 text-white rounded-md text-sm hover:bg-gray-700">
+                                <i class="fas fa-code mr-1"></i>JSON
+                            </button>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="preview-container">
-                    <div id="documentPreview" class="document-preview">
-                        <div class="text-center py-12 text-gray-500">
-                            <i class="fas fa-file-alt text-6xl mb-4"></i>
-                            <p class="text-lg">Complete los datos del paciente y seleccione un tipo de documento para ver la previsualización</p>
-                        </div>
+
+                <div id="documentPreview" class="preview-document p-8 rounded-lg medical-font">
+                    <div class="text-center text-gray-500 py-12">
+                        <i class="fas fa-file-medical text-4xl mb-4"></i>
+                        <p>Complete los datos y haga clic en "Generar Documento" para ver la previsualización</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Email Modal -->
+    <div id="emailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 no-print">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <h3 class="text-lg font-semibold mb-4">Enviar por Correo Electrónico</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email del destinatario</label>
+                    <input type="email" id="recipientEmail" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Asunto</label>
+                    <input type="text" id="emailSubject" class="w-full px-3 py-2 border border-gray-300 rounded-md" value="Documento médico - OncoTech">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Mensaje</label>
+                    <textarea id="emailMessage" class="w-full px-3 py-2 border border-gray-300 rounded-md" rows="3">Adjunto encontrará el documento médico solicitado.
+
+Saludos cordiales,
+OncoTech La Paz</textarea>
+                </div>
+            </div>
+            <div class="flex space-x-3 mt-6">
+                <button id="sendEmail" class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">
+                    <i class="fas fa-paper-plane mr-2"></i>Enviar
+                </button>
+                <button id="cancelEmail" class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Global variables
-        let currentDocumentData = {};
-        
         // URL Parameters handling
-        function loadURLParameters() {
-            const urlParams = new URLSearchParams(window.location.search);
-            
-            if (urlParams.get('nombre')) document.getElementById('patientName').value = urlParams.get('nombre');
-            if (urlParams.get('edad')) document.getElementById('patientAge').value = urlParams.get('edad');
-            if (urlParams.get('genero')) document.getElementById('patientGender').value = urlParams.get('genero');
-            if (urlParams.get('peso')) document.getElementById('patientWeight').value = urlParams.get('peso');
-            if (urlParams.get('estatura')) document.getElementById('patientHeight').value = urlParams.get('estatura');
-            if (urlParams.get('creatinina')) document.getElementById('patientCreatinine').value = urlParams.get('creatinina');
-            
-            calculateAutomaticValues();
+        function getURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                nombre: params.get('nombre'),
+                edad: params.get('edad'),
+                genero: params.get('genero'),
+                creatinina: params.get('creatinina'),
+                estatura: params.get('estatura'),
+                peso: params.get('peso')
+            };
         }
-        
+
+        function prefillData() {
+            const params = getURLParams();
+            if (params.nombre) {
+                document.getElementById('patientName').value = params.nombre;
+                document.getElementById('prescPatientName').value = params.nombre;
+                document.getElementById('labPatientName').value = params.nombre;
+                document.getElementById('imagePatientName').value = params.nombre;
+            }
+            if (params.edad) document.getElementById('age').value = params.edad;
+            if (params.genero) document.getElementById('gender').value = params.genero;
+            if (params.creatinina) document.getElementById('creatinine').value = params.creatinina;
+            if (params.estatura) document.getElementById('height').value = params.estatura;
+            if (params.peso) document.getElementById('weight').value = params.peso;
+        }
+
         // Theme handling
-        function initializeTheme() {
-            const themeSelector = document.getElementById('themeSelector');
-            const savedTheme = localStorage.getItem('oncoguia-theme') || 'light';
-            
-            themeSelector.value = savedTheme;
-            applyTheme(savedTheme);
-            
-            themeSelector.addEventListener('change', (e) => {
-                const theme = e.target.value;
-                applyTheme(theme);
-                localStorage.setItem('oncoguia-theme', theme);
+        document.getElementById('themeSelector').addEventListener('change', function(e) {
+            document.body.className = document.body.className.replace(/theme-\w+/, e.target.value);
+            localStorage.setItem('selectedTheme', e.target.value);
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('selectedTheme');
+        if (savedTheme) {
+            document.body.className = document.body.className.replace(/theme-\w+/, savedTheme);
+            document.getElementById('themeSelector').value = savedTheme;
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active classes
+                document.querySelectorAll('.tab-btn').forEach(b => {
+                    b.classList.remove('primary-text', 'border-red-600', 'active');
+                    b.classList.add('text-gray-500', 'border-transparent');
+                });
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+
+                // Add active classes
+                this.classList.add('primary-text', 'border-red-600', 'active');
+                this.classList.remove('text-gray-500', 'border-transparent');
+                document.getElementById(this.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Medication management
+        let medicationCount = 1;
+
+        document.getElementById('addMedication').addEventListener('click', function() {
+            medicationCount++;
+            const medicationHTML = `
+                <div class="medication-item border border-gray-200 rounded-lg p-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Medicamento</label>
+                            <input type="text" class="medication-name w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ej: Ondansetrón">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Presentación</label>
+                            <input type="text" class="medication-presentation w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ej: 8 mg tabletas">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Cantidad</label>
+                            <input type="text" class="medication-quantity w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ej: 30 tabletas">
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Indicaciones</label>
+                        <textarea class="medication-instructions w-full px-3 py-2 border border-gray-300 rounded-md" rows="2" placeholder="Ej: Tomar 1 tableta cada 8 horas según necesidad para náusea"></textarea>
+                    </div>
+                    <button type="button" class="remove-medication mt-2 text-red-600 text-sm hover:text-red-800">
+                        <i class="fas fa-trash mr-1"></i>Eliminar
+                    </button>
+                </div>
+            `;
+            document.getElementById('medicationList').insertAdjacentHTML('beforeend', medicationHTML);
+            attachRemoveHandlers();
+        });
+
+        function attachRemoveHandlers() {
+            document.querySelectorAll('.remove-medication').forEach(btn => {
+                btn.onclick = function() {
+                    this.closest('.medication-item').remove();
+                };
             });
         }
-        
-        function applyTheme(theme) {
-            const body = document.body;
-            body.className = body.className.replace(/\b(light|dark)\b/g, theme);
+
+        // Contrast alert for imaging
+        document.querySelectorAll('input[name="contrast"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const alert = document.getElementById('creatinineAlert');
+                if (this.value.includes('contraste IV')) {
+                    alert.classList.remove('hidden');
+                } else {
+                    alert.classList.add('hidden');
+                }
+            });
+        });
+
+        // Chemotherapy schemes data
+        const chemoSchemes = {
+            'AC-T': {
+                name: 'AC-T (Doxorrubicina/Ciclofosfamida → Paclitaxel)',
+                drugs: [
+                    { name: 'Doxorrubicina', dose: '60 mg/m²', day: 'Día 1', infusion: '15-20 min', solution: 'SF 0.9%' },
+                    { name: 'Ciclofosfamida', dose: '600 mg/m²', day: 'Día 1', infusion: '30-60 min', solution: 'SF 0.9%' }
+                ],
+                cycle: '21 días x 4 ciclos, seguido de:',
+                drugs2: [
+                    { name: 'Paclitaxel', dose: '175 mg/m²', day: 'Día 1', infusion: '3 horas', solution: 'SF 0.9%' }
+                ],
+                cycle2: '21 días x 4 ciclos',
+                premedication: ['Dexametasona 12 mg VO 12 y 6 hrs antes', 'Difenhidramina 50 mg IV 30 min antes', 'Ranitidina 50 mg IV 30 min antes'],
+                emetogenic: 'Alto',
+                special: ['Monitoreo cardiaco', 'Prevención alopecia']
+            },
+            'Trastuzumab-IV': {
+                name: 'Trastuzumab IV',
+                drugs: [
+                    { name: 'Trastuzumab', dose: '8 mg/kg (carga), 6 mg/kg (mantenimiento)', day: 'Día 1', infusion: '90 min (carga), 30 min (mant)', solution: 'SF 0.9%' }
+                ],
+                cycle: '21 días',
+                premedication: ['Paracetamol 1g VO 30 min antes', 'Difenhidramina 25 mg IV si reacción previa'],
+                emetogenic: 'Bajo',
+                special: ['Monitoreo FEVI cada 3 meses', 'Vigilar síntomas cardiacos']
+            },
+            'Phesgo': {
+                name: 'Phesgo (Pertuzumab + Trastuzumab SC)',
+                drugs: [
+                    { name: 'Phesgo', dose: '1200 mg + 600 mg (carga), 600 mg + 600 mg (mant)', day: 'Día 1', infusion: '5-8 min SC', solution: 'Subcutáneo' }
+                ],
+                cycle: '21 días',
+                premedication: ['Paracetamol 1g VO 30 min antes'],
+                emetogenic: 'Bajo',
+                special: ['Monitoreo FEVI cada 3 meses', 'Rotar sitios de inyección', 'Observación 30 min post-aplicación']
+            }
+        };
+
+        // Calculate BSA (Mosteller formula)
+        function calculateBSA(weight, height) {
+            if (!weight || !height) return 0;
+            return Math.sqrt((weight * height) / 3600);
         }
-        
-        // Automatic calculations
-        function calculateAutomaticValues() {
-            const weight = parseFloat(document.getElementById('patientWeight').value) || 0;
-            const height = parseFloat(document.getElementById('patientHeight').value) || 0;
-            const age = parseInt(document.getElementById('patientAge').value) || 0;
-            const gender = document.getElementById('patientGender').value;
-            const creatinine = parseFloat(document.getElementById('patientCreatinine').value) || 0;
+
+        // Calculate Creatinine Clearance (Cockcroft-Gault with obesity adjustment)
+        function calculateCrCl(age, weight, creatinine, gender) {
+            if (!age || !weight || !creatinine || !gender) return 0;
             
-            // Body Surface Area (Mosteller formula)
-            let bsa = 0;
-            if (weight > 0 && height > 0) {
-                bsa = Math.sqrt((weight * height) / 3600);
-                document.getElementById('bsaValue').textContent = bsa.toFixed(2) + ' m²';
-            } else {
-                document.getElementById('bsaValue').textContent = '-- m²';
+            let idealWeight = weight;
+            const height = parseFloat(document.getElementById('height').value);
+            
+            if (height) {
+                const bmi = weight / Math.pow(height / 100, 2);
+                if (bmi > 30) {
+                    // Calculate ideal weight for obesity adjustment
+                    if (gender === 'M') {
+                        idealWeight = 50 + 2.3 * ((height * 0.393701) - 60);
+                    } else {
+                        idealWeight = 45.5 + 2.3 * ((height * 0.393701) - 60);
+                    }
+                    idealWeight = Math.max(idealWeight, weight * 0.7); // Don't reduce too much
+                }
             }
             
-            // BMI
-            let bmi = 0;
-            if (weight > 0 && height > 0) {
-                bmi = weight / Math.pow(height / 100, 2);
-                document.getElementById('bmiValue').textContent = bmi.toFixed(1) + ' kg/m²';
-            } else {
-                document.getElementById('bmiValue').textContent = '-- kg/m²';
-            }
-            
-            // Creatinine Clearance (Cockcroft-Gault)
-            let crcl = 0;
-            if (age > 0 && weight > 0 && creatinine > 0 && gender) {
-                const genderFactor = gender === 'F' ? 0.85 : 1.0;
-                crcl = ((140 - age) * weight * genderFactor) / (72 * creatinine);
-                document.getElementById('crclValue').textContent = crcl.toFixed(0) + ' mL/min';
-            } else {
-                document.getElementById('crclValue').textContent = '-- mL/min';
-            }
+            const genderFactor = gender === 'M' ? 1.0 : 0.85;
+            return ((140 - age) * idealWeight * genderFactor) / (72 * creatinine);
         }
-        
-        // Document type handling
-        function handleDocumentTypeChange() {
-            const documentType = document.getElementById('documentType').value;
-            const dynamicContent = document.getElementById('dynamicContent');
+
+        // Generate document
+        document.getElementById('generateDocument').addEventListener('click', function() {
+            const activeTab = document.querySelector('.tab-content.active').id;
             
-            dynamicContent.innerHTML = '';
-            
-            switch (documentType) {
-                case 'chemotherapy':
-                    dynamicContent.innerHTML = createChemotherapyForm();
+            switch(activeTab) {
+                case 'quimioterapia':
+                    generateChemotherapy();
                     break;
-                case 'prescription':
-                    dynamicContent.innerHTML = createPrescriptionForm();
+                case 'recetas':
+                    generatePrescription();
                     break;
-                case 'laboratory':
-                    dynamicContent.innerHTML = createLaboratoryForm();
+                case 'laboratorio':
+                    generateLabRequest();
                     break;
-                case 'imaging':
-                    dynamicContent.innerHTML = createImagingForm();
+                case 'imagen':
+                    generateImageRequest();
                     break;
-                case 'instructions':
-                    dynamicContent.innerHTML = createInstructionsForm();
-                    break;
-                default:
-                    dynamicContent.innerHTML = `
-                        <div class="text-center py-8 theme-text-secondary">
-                            <i class="fas fa-arrow-up text-4xl mb-4"></i>
-                            <p>Seleccione un tipo de documento para continuar</p>
+            }
+        });
+
+        function generateChemotherapy() {
+            const patientName = document.getElementById('patientName').value;
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const creatinine = parseFloat(document.getElementById('creatinine').value);
+            const scheme = document.getElementById('chemoScheme').value;
+            const docType = document.querySelector('input[name="docType"]:checked').value;
+
+            if (!patientName || !scheme) {
+                alert('Por favor complete los datos básicos del paciente y seleccione un esquema');
+                return;
+            }
+
+            const bsa = calculateBSA(weight, height);
+            const crCl = calculateCrCl(age, weight, creatinine, gender);
+            const currentDate = new Date().toLocaleDateString('es-MX');
+
+            let html = `
+                <div class="medical-document">
+                    <div class="header text-center mb-8">
+                        <img src="https://www.jotform.com/uploads/jeanp27/form_files/Logo%20para%20membrete.684c557f007857.92019324.png" 
+                             alt="OncoTech" class="mx-auto h-16 mb-4">
+                        <h1 class="text-2xl font-bold primary-text">OncoTech</h1>
+                        <p class="text-sm text-gray-600">Normal Urbana 1367, Colonia Perla, La Paz, BCS</p>
+                        <p class="text-sm text-gray-600">Tel: (612) 129.71.71</p>
+                        <hr class="my-4">
+                    </div>
+
+                    <div class="document-info mb-6">
+                        <h2 class="text-xl font-bold mb-4">${docType === 'indicaciones' ? 'INDICACIONES MÉDICAS' : 'GUÍA PARA EL PACIENTE'}</h2>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div><strong>Paciente:</strong> ${patientName}</div>
+                            <div><strong>Fecha:</strong> ${currentDate}</div>
+                            <div><strong>Edad:</strong> ${age} años</div>
+                            <div><strong>Sexo:</strong> ${gender === 'M' ? 'Masculino' : 'Femenino'}</div>
+                            <div><strong>Peso:</strong> ${weight} kg</div>
+                            <div><strong>Estatura:</strong> ${height} cm</div>
+                            <div><strong>SC:</strong> ${bsa.toFixed(2)} m²</div>
+                            <div><strong>ClCr:</strong> ${crCl.toFixed(1)} mL/min</div>
+                        </div>
+                    </div>
+
+                    <div class="scheme-info mb-6">
+                        <h3 class="text-lg font-bold mb-3">Esquema: ${chemoSchemes[scheme]?.name || scheme}</h3>
+                        ${generateSchemeDetails(scheme, bsa, docType)}
+                    </div>
+
+                    ${docType === 'guia' ? generatePatientGuidance(scheme) : ''}
+
+                    <div class="footer mt-8 pt-4 border-t">
+                        <p class="text-sm text-gray-600">Documento generado por OncoGuía Pro v6.0 - OncoTech La Paz</p>
+                        <p class="text-sm text-gray-600">L-V 9:00 AM - 9:00 PM | Solo con cita previa | Tel: (612) 129.71.71</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('documentPreview').innerHTML = html;
+        }
+
+        function generateSchemeDetails(scheme, bsa, docType) {
+            const schemeData = chemoSchemes[scheme];
+            if (!schemeData) return '<p>Esquema no encontrado en la base de datos.</p>';
+
+            let html = '';
+
+            if (docType === 'indicaciones') {
+                // Medical indications format
+                html += '<div class="medications mb-4">';
+                html += '<h4 class="font-bold mb-2">MEDICAMENTOS:</h4>';
+                schemeData.drugs.forEach(drug => {
+                    const calculatedDose = drug.dose.includes('mg/m²') ? 
+                        (parseFloat(drug.dose) * bsa).toFixed(1) + ' mg' : drug.dose;
+                    html += `
+                        <div class="medication-entry mb-3 p-3 bg-gray-50 rounded">
+                            <div class="font-medium">${drug.name}</div>
+                            <div class="text-sm grid grid-cols-2 gap-2">
+                                <div><strong>Dosis:</strong> ${calculatedDose} (${drug.dose})</div>
+                                <div><strong>Día:</strong> ${drug.day}</div>
+                                <div><strong>Infusión:</strong> ${drug.infusion}</div>
+                                <div><strong>Solución:</strong> ${drug.solution}</div>
+                            </div>
                         </div>
                     `;
-            }
-            
-            updateGenerateButton();
-        }
-        
-        function createChemotherapyForm() {
-            return `
-                <div class="space-y-4">
-                    <h3 class="text-lg font-semibold theme-text-primary">Configuración de Quimioterapia</h3>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Diagnóstico</label>
-                        <input type="text" id="diagnosis" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" placeholder="Ej: Ca mama T2N1M0 HER2+">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Tipo de Documento</label>
-                        <select id="chemoDocType" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary">
-                            <option value="patient_guide">Guía para Paciente</option>
-                            <option value="medical_instructions">Indicaciones Médicas</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Esquema de Tratamiento</label>
-                        <select id="treatmentScheme" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary">
-                            <option value="">Seleccionar esquema...</option>
-                            <optgroup label="Mama">
-                                <option value="ac">AC (Doxorrubicina + Ciclofosfamida)</option>
-                                <option value="act">AC-T (AC → Paclitaxel)</option>
-                                <option value="tch">TCH (Docetaxel + Carboplatino + Trastuzumab)</option>
-                                <option value="trastuzumab_iv">Trastuzumab IV</option>
-                                <option value="trastuzumab_sc">Trastuzumab SC</option>
-                                <option value="pertuzumab">Pertuzumab</option>
-                                <option value="tdm1">T-DM1 (Kadcyla)</option>
-                                <option value="tdxd">T-DXd (Enhertu)</option>
-                                <option value="phesgo">Phesgo (Pertuzumab + Trastuzumab SC)</option>
-                                <option value="paclitaxel">Paclitaxel semanal</option>
-                                <option value="docetaxel">Docetaxel</option>
-                            </optgroup>
-                            <optgroup label="Colorrectal">
-                                <option value="folfox">FOLFOX</option>
-                                <option value="folfiri">FOLFIRI</option>
-                                <option value="folfiri_cetuximab">FOLFIRI + Cetuximab</option>
-                                <option value="folfiri_bevacizumab">FOLFIRI + Bevacizumab</option>
-                                <option value="capox_bevacizumab">CAPOX + Bevacizumab</option>
-                                <option value="gramont">Esquema Gramont</option>
-                            </optgroup>
-                            <optgroup label="Páncreas">
-                                <option value="folfirinox">FOLFIRINOX</option>
-                                <option value="gemcitabine_carboplatin">Gemcitabina + Carboplatino</option>
-                            </optgroup>
-                            <optgroup label="Gástrico">
-                                <option value="flot">FLOT</option>
-                            </optgroup>
-                            <optgroup label="Testicular">
-                                <option value="bep">BEP</option>
-                                <option value="ep">EP</option>
-                            </optgroup>
-                            <optgroup label="Pulmón/Ovario">
-                                <option value="carboplatin_paclitaxel">Carboplatino + Paclitaxel</option>
-                            </optgroup>
-                            <optgroup label="Monodrogas">
-                                <option value="cisplatin">Cisplatino</option>
-                                <option value="carboplatin">Carboplatino</option>
-                            </optgroup>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Número de Ciclos</label>
-                        <input type="number" id="cycleNumber" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" min="1" max="12" value="4">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Notas Adicionales</label>
-                        <textarea id="additionalNotes" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" rows="3" placeholder="Notas específicas del caso..."></textarea>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function createPrescriptionForm() {
-            return `
-                <div class="space-y-4">
-                    <h3 class="text-lg font-semibold theme-text-primary">Receta Médica</h3>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Medicamento</label>
-                        <input type="text" id="medication" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" placeholder="Ej: Ondansetrón">
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium theme-text-primary mb-1">Concentración</label>
-                            <input type="text" id="concentration" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" placeholder="Ej: 8 mg">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium theme-text-primary mb-1">Presentación</label>
-                            <input type="text" id="presentation" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" placeholder="Ej: Tabletas">
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Dosis y Frecuencia</label>
-                        <input type="text" id="dosage" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" placeholder="Ej: 1 tableta cada 8 horas">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Vía de Administración</label>
-                        <select id="route" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary">
-                            <option value="oral">Vía Oral</option>
-                            <option value="iv">Intravenosa</option>
-                            <option value="im">Intramuscular</option>
-                            <option value="sc">Subcutánea</option>
-                            <option value="topical">Tópica</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Duración</label>
-                        <input type="text" id="duration" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" placeholder="Ej: 5 días">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Instrucciones Especiales</label>
-                        <textarea id="instructions" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" rows="3" placeholder="Instrucciones adicionales..."></textarea>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function createLaboratoryForm() {
-            return `
-                <div class="space-y-4">
-                    <h3 class="text-lg font-semibold theme-text-primary">Solicitud de Laboratorio</h3>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Panel de Estudios</label>
-                        <select id="labPanel" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary">
-                            <option value="">Seleccionar panel...</option>
-                            <option value="basic">Panel Básico (BH, QS, PFH, PFR)</option>
-                            <option value="pre_chemo">Pre-Quimioterapia (+ Tiempos de coagulación)</option>
-                            <option value="follow_up">Seguimiento (+ Marcadores tumorales)</option>
-                            <option value="toxicity">Evaluación Toxicidad (+ CPK, LDH, Mg)</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Estudios Específicos</label>
-                        <textarea id="specificTests" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" rows="3" placeholder="Estudios adicionales específicos..."></textarea>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Urgencia</label>
-                        <select id="urgency" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary">
-                            <option value="routine">Rutina</option>
-                            <option value="urgent">Urgente</option>
-                            <option value="stat">STAT</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Indicación Clínica</label>
-                        <textarea id="clinicalIndication" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" rows="2" placeholder="Indicación o sospecha diagnóstica..."></textarea>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function createImagingForm() {
-            return `
-                <div class="space-y-4">
-                    <h3 class="text-lg font-semibold theme-text-primary">Solicitud de Imagen</h3>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Tipo de Estudio</label>
-                        <select id="imagingType" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary">
-                            <option value="">Seleccionar tipo...</option>
-                            <option value="ct">Tomografía Computada (TC)</option>
-                            <option value="mri">Resonancia Magnética (RM)</option>
-                            <option value="us">Ultrasonido</option>
-                            <option value="xray">Radiografía</option>
-                            <option value="pet">PET-CT</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Región Anatómica</label>
-                        <select id="anatomicRegion" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary">
-                            <option value="">Seleccionar región...</option>
-                            <option value="thorax">Tórax</option>
-                            <option value="abdomen">Abdomen</option>
-                            <option value="pelvis">Pelvis</option>
-                            <option value="tap">Tórax, Abdomen y Pelvis</option>
-                            <option value="brain">Cerebro</option>
-                            <option value="neck">Cuello</option>
-                            <option value="extremities">Extremidades</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Contraste</label>
-                        <select id="contrast" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary">
-                            <option value="none">Sin contraste</option>
-                            <option value="iv">Contraste IV</option>
-                            <option value="oral">Contraste oral</option>
-                            <option value="both">Contraste IV y oral</option>
-                        </select>
-                    </div>
-                    
-                    <div id="contrastWarning" class="hidden p-3 bg-yellow-100 border border-yellow-400 rounded-lg">
-                        <p class="text-yellow-800 text-sm">
-                            <i class="fas fa-exclamation-triangle mr-2"></i>
-                            <strong>Requiere creatinina ≤ 1.5 mg/dL</strong> - Verificar función renal antes del estudio
-                        </p>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Indicación Clínica</label>
-                        <textarea id="imagingIndication" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" rows="3" placeholder="Indicación o sospecha diagnóstica..."></textarea>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function createInstructionsForm() {
-            return `
-                <div class="space-y-4">
-                    <h3 class="text-lg font-semibold theme-text-primary">Indicaciones Médicas</h3>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Tipo de Indicaciones</label>
-                        <select id="instructionsType" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary">
-                            <option value="post_chemo">Post-Quimioterapia</option>
-                            <option value="pre_surgery">Pre-Quirúrgicas</option>
-                            <option value="discharge">Alta Hospitalaria</option>
-                            <option value="follow_up">Seguimiento</option>
-                            <option value="custom">Personalizadas</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Indicaciones Específicas</label>
-                        <textarea id="specificInstructions" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" rows="6" placeholder="Escriba las indicaciones específicas..."></textarea>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Signos de Alarma</label>
-                        <textarea id="alarmSigns" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary" rows="3" placeholder="Signos de alarma que requieren contacto inmediato..."></textarea>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium theme-text-primary mb-1">Próxima Cita</label>
-                        <input type="date" id="nextAppointment" class="w-full px-3 py-2 border theme-border rounded-lg theme-bg-primary theme-text-primary">
-                    </div>
-                </div>
-            `;
-        }
-        
-        function updateGenerateButton() {
-            const documentType = document.getElementById('documentType').value;
-            const patientName = document.getElementById('patientName').value;
-            const generateBtn = document.getElementById('generateBtn');
-            
-            if (documentType && patientName) {
-                generateBtn.disabled = false;
-                generateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                });
+                html += '</div>';
+
+                if (schemeData.premedication?.length) {
+                    html += '<div class="premedication mb-4">';
+                    html += '<h4 class="font-bold mb-2">PREMEDICACIÓN:</h4>';
+                    html += '<ul class="list-disc list-inside text-sm">';
+                    schemeData.premedication.forEach(med => {
+                        html += `<li>${med}</li>`;
+                    });
+                    html += '</ul></div>';
+                }
+
+                html += `<div class="cycle-info mb-4">`;
+                html += `<h4 class="font-bold mb-2">CRONOGRAMA:</h4>`;
+                html += `<p class="text-sm">${schemeData.cycle}</p>`;
+                html += `</div>`;
+
             } else {
-                generateBtn.disabled = true;
-                generateBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                // Patient guidance format
+                html += '<div class="patient-info">';
+                html += '<h4 class="font-bold mb-2">Su Tratamiento:</h4>';
+                html += `<p class="mb-2">Usted recibirá el esquema <strong>${schemeData.name}</strong></p>`;
+                html += '<p class="mb-2">Medicamentos que recibirá:</p>';
+                html += '<ul class="list-disc list-inside text-sm mb-4">';
+                schemeData.drugs.forEach(drug => {
+                    html += `<li>${drug.name} - ${drug.day}</li>`;
+                });
+                html += '</ul>';
+                html += `<p class="text-sm mb-4"><strong>Frecuencia:</strong> ${schemeData.cycle}</p>`;
+                html += '</div>';
             }
+
+            return html;
         }
-        
-        // Document generation
-        function generateDocument() {
-            const documentType = document.getElementById('documentType').value;
-            
-            switch (documentType) {
-                case 'chemotherapy':
-                    generateChemotherapyDocument();
-                    break;
-                case 'prescription':
-                    generatePrescriptionDocument();
-                    break;
-                case 'laboratory':
-                    generateLaboratoryDocument();
-                    break;
-                case 'imaging':
-                    generateImagingDocument();
-                    break;
-                case 'instructions':
-                    generateInstructionsDocument();
-                    break;
+
+        function generatePatientGuidance(scheme) {
+            const schemeData = chemoSchemes[scheme];
+            if (!schemeData) return '';
+
+            let html = '<div class="patient-guidance mt-6">';
+            html += '<h3 class="text-lg font-bold mb-4">RECOMENDACIONES IMPORTANTES</h3>';
+
+            // Laboratory timing - ONLY in patient guidance
+            html += '<div class="lab-timing mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded">';
+            html += '<h4 class="font-bold mb-2 text-yellow-800"><i class="fas fa-vial mr-2"></i>TIMING DE LABORATORIOS</h4>';
+            html += '<div class="text-sm text-yellow-800">';
+            html += '<p class="mb-2"><strong>CUÁNDO SÍ hacerse laboratorios:</strong></p>';
+            html += '<ul class="list-disc list-inside mb-3">';
+            html += '<li>1-3 días antes del siguiente ciclo</li>';
+            html += '<li>Si tiene fiebre mayor a 38°C</li>';
+            html += '<li>Si hay sangrado anormal</li>';
+            html += '<li>Cuando su oncólogo se lo indique específicamente</li>';
+            html += '</ul>';
+            html += '<p class="mb-2"><strong>CUÁNDO NO hacerse laboratorios:</strong></p>';
+            html += '<ul class="list-disc list-inside">';
+            html += '<li>Entre los días 5-14 después de quimioterapia (período de nadir)</li>';
+            html += '<li>Por curiosidad o ansiedad</li>';
+            html += '<li>A solicitud de otros médicos sin coordinar con oncología</li>';
+            html += '</ul>';
+            html += '</div>';
+            html += '</div>';
+
+            // Side effects based on scheme
+            if (schemeData.emetogenic === 'Alto') {
+                html += '<div class="side-effects mb-4">';
+                html += '<h4 class="font-bold mb-2"><i class="fas fa-exclamation-triangle mr-2 text-yellow-500"></i>MANEJO DE NÁUSEA Y VÓMITO</h4>';
+                html += '<ul class="list-disc list-inside text-sm">';
+                html += '<li>Tome sus medicamentos antieméticos según indicación</li>';
+                html += '<li>Comidas pequeñas y frecuentes</li>';
+                html += '<li>Evite olores fuertes</li>';
+                html += '<li>Manténgase hidratado</li>';
+                html += '</ul>';
+                html += '</div>';
             }
-            
-            // Enable export buttons
-            document.getElementById('pdfBtn').disabled = false;
-            document.getElementById('emailBtn').disabled = false;
-            document.getElementById('jsonBtn').disabled = false;
-        }
-        
-        function generateChemotherapyDocument() {
-            const patientData = getPatientData();
-            const diagnosis = document.getElementById('diagnosis').value;
-            const docType = document.getElementById('chemoDocType').value;
-            const scheme = document.getElementById('treatmentScheme').value;
-            const cycles = document.getElementById('cycleNumber').value;
-            const notes = document.getElementById('additionalNotes').value;
-            
-            const schemeData = getSchemeData(scheme);
-            const doses = calculateDoses(schemeData, patientData);
-            
-            let content = `
-                <div class="document-preview">
-                    <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #dc2626; padding-bottom: 20px;">
-                        <img src="https://www.jotform.com/uploads/jeanp27/form_files/Logo%20para%20membrete.684c557f007857.92019324.png" alt="OncoTech" style="height: 60px; margin-bottom: 10px;">
-                        <h1 style="color: #dc2626; margin: 0;">OncoTech - Centro de Oncología</h1>
-                        <p style="margin: 5px 0; font-size: 14px;">Normal Urbana 1367, Colonia Perla, La Paz, BCS | Tel: (612) 129-71-71</p>
-                    </div>
-                    
-                    <h1>${docType === 'patient_guide' ? 'Guía de Quimioterapia para el Paciente' : 'Indicaciones Médicas de Quimioterapia'}</h1>
-                    
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <h2>Datos del Paciente</h2>
-                        <p><strong>Nombre:</strong> ${patientData.name}</p>
-                        <p><strong>Edad:</strong> ${patientData.age} años</p>
-                        <p><strong>Sexo:</strong> ${patientData.gender === 'M' ? 'Masculino' : 'Femenino'}</p>
-                        <p><strong>Peso:</strong> ${patientData.weight} kg</p>
-                        <p><strong>Estatura:</strong> ${patientData.height} cm</p>
-                        <p><strong>Superficie Corporal:</strong> ${patientData.bsa} m²</p>
-                        ${patientData.creatinine ? `<p><strong>Creatinina:</strong> ${patientData.creatinine} mg/dL</p>` : ''}
-                        ${patientData.crcl ? `<p><strong>Depuración de Creatinina:</strong> ${patientData.crcl} mL/min</p>` : ''}
-                    </div>
-                    
-                    <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <h2>Información del Tratamiento</h2>
-                        <p><strong>Diagnóstico:</strong> ${diagnosis}</p>
-                        <p><strong>Esquema:</strong> ${schemeData.name}</p>
-                        <p><strong>Número de Ciclos:</strong> ${cycles}</p>
-                        <p><strong>Frecuencia:</strong> ${schemeData.frequency}</p>
-                    </div>
-            `;
-            
-            if (docType === 'medical_instructions') {
-                content += generateMedicalInstructions(schemeData, doses);
-            } else {
-                content += generatePatientGuide(schemeData, doses);
+
+            if (schemeData.special?.includes('Monitoreo cardiaco')) {
+                html += '<div class="cardiac-care mb-4">';
+                html += '<h4 class="font-bold mb-2"><i class="fas fa-heart mr-2 text-red-500"></i>CUIDADO CARDIACO</h4>';
+                html += '<ul class="list-disc list-inside text-sm">';
+                html += '<li>Acuda puntualmente a sus ecocardiogramas de control</li>';
+                html += '<li>Reporte inmediatamente: dificultad para respirar, hinchazón de pies, dolor de pecho</li>';
+                html += '<li>Mantenga actividad física ligera según tolerancia</li>';
+                html += '</ul>';
+                html += '</div>';
             }
-            
-            if (notes) {
-                content += `
-                    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 20px;">
-                        <h3>Notas Adicionales</h3>
-                        <p>${notes}</p>
-                    </div>
-                `;
-            }
-            
-            content += `
-                    <div style="margin-top: 30px; text-align: center; font-size: 12px; color: #666;">
-                        <p>Documento generado el ${new Date().toLocaleDateString('es-MX')} con OncoGuía Pro v8.0</p>
-                        <p>OncoTech - Solo con previa cita • No urgencias</p>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('documentPreview').innerHTML = content;
-            currentDocumentData = { type: 'chemotherapy', content: content, patient: patientData };
+
+            // General recommendations
+            html += '<div class="general-care mb-4">';
+            html += '<h4 class="font-bold mb-2"><i class="fas fa-shield-alt mr-2 text-green-500"></i>CUIDADOS GENERALES</h4>';
+            html += '<ul class="list-disc list-inside text-sm">';
+            html += '<li>Lávese las manos frecuentemente</li>';
+            html += '<li>Evite multitudes y personas enfermas</li>';
+            html += '<li>Mantenga una buena higiene oral</li>';
+            html += '<li>Hidratación adecuada (2-3 litros de agua al día)</li>';
+            html += '<li>Dieta balanceada, evite alimentos crudos</li>';
+            html += '</ul>';
+            html += '</div>';
+
+            // Emergency signs
+            html += '<div class="emergency-signs mb-4 p-4 bg-red-50 border border-red-200 rounded">';
+            html += '<h4 class="font-bold mb-2 text-red-800"><i class="fas fa-phone-alt mr-2"></i>CUÁNDO CONTACTAR INMEDIATAMENTE</h4>';
+            html += '<ul class="list-disc list-inside text-sm text-red-800">';
+            html += '<li>Fiebre mayor a 38°C</li>';
+            html += '<li>Sangrado anormal</li>';
+            html += '<li>Dificultad para respirar</li>';
+            html += '<li>Dolor de pecho</li>';
+            html += '<li>Vómito persistente que impide tomar líquidos</li>';
+            html += '<li>Diarrea severa</li>';
+            html += '</ul>';
+            html += '<p class="mt-2 font-bold">Contacto OncoTech: (612) 129.71.71</p>';
+            html += '</div>';
+
+            html += '</div>';
+            return html;
         }
-        
-        function generatePrescriptionDocument() {
-            const patientData = getPatientData();
-            const medication = document.getElementById('medication').value;
-            const concentration = document.getElementById('concentration').value;
-            const presentation = document.getElementById('presentation').value;
-            const dosage = document.getElementById('dosage').value;
-            const route = document.getElementById('route').value;
-            const duration = document.getElementById('duration').value;
-            const instructions = document.getElementById('instructions').value;
+
+        function generatePrescription() {
+            const patientName = document.getElementById('prescPatientName').value;
+            const date = document.getElementById('prescDate').value || new Date().toLocaleDateString('es-MX');
             
-            const content = `
-                <div class="document-preview">
-                    <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #dc2626; padding-bottom: 20px;">
-                        <img src="https://www.jotform.com/uploads/jeanp27/form_files/Logo%20para%20membrete.684c557f007857.92019324.png" alt="OncoTech" style="height: 60px; margin-bottom: 10px;">
-                        <h1 style="color: #dc2626; margin: 0;">OncoTech - Centro de Oncología</h1>
-                        <p style="margin: 5px 0; font-size: 14px;">Normal Urbana 1367, Colonia Perla, La Paz, BCS | Tel: (612) 129-71-71</p>
-                    </div>
-                    
-                    <h1>RECETA MÉDICA</h1>
-                    
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <p><strong>Paciente:</strong> ${patientData.name}</p>
-                        <p><strong>Edad:</strong> ${patientData.age} años</p>
-                        <p><strong>Fecha:</strong> ${new Date().toLocaleDateString('es-MX')}</p>
-                    </div>
-                    
-                    <div style="background: white; border: 2px solid #dc2626; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                        <h2 style="color: #dc2626;">Rx:</h2>
-                        <div style="font-size: 18px; line-height: 1.8;">
-                            <p><strong>${medication} ${concentration}</strong></p>
-                            <p><strong>Presentación:</strong> ${presentation}</p>
-                            <p><strong>Indicaciones:</strong> ${dosage}</p>
-                            <p><strong>Vía:</strong> ${route}</p>
-                            <p><strong>Duración:</strong> ${duration}</p>
-                            ${instructions ? `<p><strong>Instrucciones especiales:</strong> ${instructions}</p>` : ''}
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 40px; text-align: right;">
-                        <div style="border-top: 1px solid #000; width: 300px; margin-left: auto; padding-top: 10px;">
-                            <p><strong>Dr. [NOMBRE]</strong></p>
-                            <p>Cédula: [NÚMERO]</p>
-                            <p>OncoTech - Centro de Oncología</p>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 30px; text-align: center; font-size: 12px; color: #666;">
-                        <p>Documento generado el ${new Date().toLocaleDateString('es-MX')} con OncoGuía Pro v8.0</p>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('documentPreview').innerHTML = content;
-            currentDocumentData = { type: 'prescription', content: content, patient: patientData };
-        }
-        
-        function generateLaboratoryDocument() {
-            const patientData = getPatientData();
-            const panel = document.getElementById('labPanel').value;
-            const specificTests = document.getElementById('specificTests').value;
-            const urgency = document.getElementById('urgency').value;
-            const indication = document.getElementById('clinicalIndication').value;
-            
-            const panelData = getLabPanelData(panel);
-            const preparation = getLabPreparation(panel);
-            
-            const content = `
-                <div class="document-preview">
-                    <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #dc2626; padding-bottom: 20px;">
-                        <img src="https://www.jotform.com/uploads/jeanp27/form_files/Logo%20para%20membrete.684c557f007857.92019324.png" alt="OncoTech" style="height: 60px; margin-bottom: 10px;">
-                        <h1 style="color: #dc2626; margin: 0;">OncoTech - Centro de Oncología</h1>
-                        <p style="margin: 5px 0; font-size: 14px;">Normal Urbana 1367, Colonia Perla, La Paz, BCS | Tel: (612) 129-71-71</p>
-                    </div>
-                    
-                    <h1>SOLICITUD DE LABORATORIO</h1>
-                    
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div>
-                                <p><strong>Paciente:</strong> ${patientData.name}</p>
-                                <p><strong>Edad:</strong> ${patientData.age} años</p>
-                                <p><strong>Sexo:</strong> ${patientData.gender === 'M' ? 'Masculino' : 'Femenino'}</p>
-                            </div>
-                            <div>
-                                <p><strong>Fecha:</strong> ${new Date().toLocaleDateString('es-MX')}</p>
-                                <p><strong>Urgencia:</strong> ${urgency.charAt(0).toUpperCase() + urgency.slice(1)}</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <h2>Estudios Solicitados</h2>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px;">
-                            ${panelData.tests.map(test => `<div style="padding: 8px; background: white; border-radius: 4px;">☐ ${test}</div>`).join('')}
-                        </div>
-                        ${specificTests ? `
-                            <h3 style="margin-top: 15px;">Estudios Adicionales:</h3>
-                            <p>${specificTests}</p>
-                        ` : ''}
-                    </div>
-                    
-                    ${indication ? `
-                        <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                            <h3>Indicación Clínica</h3>
-                            <p>${indication}</p>
-                        </div>
-                    ` : ''}
-                    
-                    <div style="background: #d4edda; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <h3>Preparación del Paciente</h3>
-                        <ul>
-                            ${preparation.map(prep => `<li>${prep}</li>`).join('')}
-                        </ul>
-                    </div>
-                    
-                    <div style="margin-top: 40px; text-align: right;">
-                        <div style="border-top: 1px solid #000; width: 300px; margin-left: auto; padding-top: 10px;">
-                            <p><strong>Dr. [NOMBRE]</strong></p>
-                            <p>Cédula: [NÚMERO]</p>
-                            <p>OncoTech - Centro de Oncología</p>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 30px; text-align: center; font-size: 12px; color: #666;">
-                        <p>Documento generado el ${new Date().toLocaleDateString('es-MX')} con OncoGuía Pro v8.0</p>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('documentPreview').innerHTML = content;
-            currentDocumentData = { type: 'laboratory', content: content, patient: patientData };
-        }
-        
-        function generateImagingDocument() {
-            const patientData = getPatientData();
-            const imagingType = document.getElementById('imagingType').value;
-            const region = document.getElementById('anatomicRegion').value;
-            const contrast = document.getElementById('contrast').value;
-            const indication = document.getElementById('imagingIndication').value;
-            
-            const studyData = getImagingStudyData(imagingType, region, contrast);
-            const preparation = getImagingPreparation(imagingType, contrast);
-            
-            const content = `
-                <div class="document-preview">
-                    <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #dc2626; padding-bottom: 20px;">
-                        <img src="https://www.jotform.com/uploads/jeanp27/form_files/Logo%20para%20membrete.684c557f007857.92019324.png" alt="OncoTech" style="height: 60px; margin-bottom: 10px;">
-                        <h1 style="color: #dc2626; margin: 0;">OncoTech - Centro de Oncología</h1>
-                        <p style="margin: 5px 0; font-size: 14px;">Normal Urbana 1367, Colonia Perla, La Paz, BCS | Tel: (612) 129-71-71</p>
-                    </div>
-                    
-                    <h1>SOLICITUD DE ESTUDIO DE IMAGEN</h1>
-                    
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div>
-                                <p><strong>Paciente:</strong> ${patientData.name}</p>
-                                <p><strong>Edad:</strong> ${patientData.age} años</p>
-                                <p><strong>Sexo:</strong> ${patientData.gender === 'M' ? 'Masculino' : 'Femenino'}</p>
-                                ${patientData.creatinine ? `<p><strong>Creatinina:</strong> ${patientData.creatinine} mg/dL</p>` : ''}
-                            </div>
-                            <div>
-                                <p><strong>Fecha:</strong> ${new Date().toLocaleDateString('es-MX')}</p>
-                                <p><strong>Peso:</strong> ${patientData.weight} kg</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <h2>Estudio Solicitado</h2>
-                        <div style="font-size: 18px; font-weight: bold; color: #dc2626; margin: 10px 0;">
-                            ${studyData.fullName}
-                        </div>
-                        <p><strong>Modalidad:</strong> ${studyData.modality}</p>
-                        <p><strong>Región:</strong> ${studyData.region}</p>
-                        <p><strong>Contraste:</strong> ${studyData.contrast}</p>
-                    </div>
-                    
-                    ${(contrast === 'iv' || contrast === 'both') && patientData.creatinine > 1.5 ? `
-                        <div style="background: #f8d7da; border: 2px solid #dc3545; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                            <h3 style="color: #dc3545;">⚠️ ALERTA DE CREATININA</h3>
-                            <p>Creatinina elevada (${patientData.creatinine} mg/dL). Evaluar riesgo/beneficio del contraste o considerar pre-hidratación.</p>
-                        </div>
-                    ` : ''}
-                    
-                    ${indication ? `
-                        <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                            <h3>Indicación Clínica</h3>
-                            <p>${indication}</p>
-                        </div>
-                    ` : ''}
-                    
-                    <div style="background: #d4edda; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <h3>Preparación del Paciente</h3>
-                        <ul>
-                            ${preparation.map(prep => `<li>${prep}</li>`).join('')}
-                        </ul>
-                    </div>
-                    
-                    <div style="margin-top: 40px; text-align: right;">
-                        <div style="border-top: 1px solid #000; width: 300px; margin-left: auto; padding-top: 10px;">
-                            <p><strong>Dr. [NOMBRE]</strong></p>
-                            <p>Cédula: [NÚMERO]</p>
-                            <p>OncoTech - Centro de Oncología</p>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 30px; text-align: center; font-size: 12px; color: #666;">
-                        <p>Documento generado el ${new Date().toLocaleDateString('es-MX')} con OncoGuía Pro v8.0</p>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('documentPreview').innerHTML = content;
-            currentDocumentData = { type: 'imaging', content: content, patient: patientData };
-        }
-        
-        function generateInstructionsDocument() {
-            const patientData = getPatientData();
-            const instructionsType = document.getElementById('instructionsType').value;
-            const specificInstructions = document.getElementById('specificInstructions').value;
-            const alarmSigns = document.getElementById('alarmSigns').value;
-            const nextAppointment = document.getElementById('nextAppointment').value;
-            
-            const content = `
-                <div class="document-preview">
-                    <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #dc2626; padding-bottom: 20px;">
-                        <img src="https://www.jotform.com/uploads/jeanp27/form_files/Logo%20para%20membrete.684c557f007857.92019324.png" alt="OncoTech" style="height: 60px; margin-bottom: 10px;">
-                        <h1 style="color: #dc2626; margin: 0;">OncoTech - Centro de Oncología</h1>
-                        <p style="margin: 5px 0; font-size: 14px;">Normal Urbana 1367, Colonia Perla, La Paz, BCS | Tel: (612) 129-71-71</p>
-                    </div>
-                    
-                    <h1>INDICACIONES MÉDICAS</h1>
-                    
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <p><strong>Paciente:</strong> ${patientData.name}</p>
-                        <p><strong>Edad:</strong> ${patientData.age} años</p>
-                        <p><strong>Fecha:</strong> ${new Date().toLocaleDateString('es-MX')}</p>
-                        <p><strong>Tipo de indicaciones:</strong> ${getInstructionsTypeName(instructionsType)}</p>
-                    </div>
-                    
-                    <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <h2>Indicaciones Específicas</h2>
-                        <div style="white-space: pre-line; line-height: 1.6;">
-                            ${specificInstructions}
-                        </div>
-                    </div>
-                    
-                    ${alarmSigns ? `
-                        <div style="background: #f8d7da; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                            <h3 style="color: #dc3545;">🚨 Signos de Alarma</h3>
-                            <p>Contacte inmediatamente a OncoTech al (612) 129-71-71 si presenta:</p>
-                            <div style="white-space: pre-line; line-height: 1.6;">
-                                ${alarmSigns}
-                            </div>
-                        </div>
-                    ` : ''}
-                    
-                    ${nextAppointment ? `
-                        <div style="background: #d4edda; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                            <h3>📅 Próxima Cita</h3>
-                            <p><strong>Fecha:</strong> ${new Date(nextAppointment).toLocaleDateString('es-MX')}</p>
-                            <p>Recuerde acudir puntualmente. Solo se atiende con previa cita.</p>
-                        </div>
-                    ` : ''}
-                    
-                    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <h3>Contacto</h3>
-                        <p><strong>OncoTech - Centro de Oncología</strong></p>
-                        <p>📍 Normal Urbana 1367, Colonia Perla, La Paz, BCS</p>
-                        <p>📞 (612) 129-71-71</p>
-                        <p>🕘 Lunes a Viernes: 9:00 AM - 9:00 PM</p>
-                        <p>⚠️ Solo con previa cita • No se atienden urgencias</p>
-                    </div>
-                    
-                    <div style="margin-top: 40px; text-align: right;">
-                        <div style="border-top: 1px solid #000; width: 300px; margin-left: auto; padding-top: 10px;">
-                            <p><strong>Dr. [NOMBRE]</strong></p>
-                            <p>Cédula: [NÚMERO]</p>
-                            <p>OncoTech - Centro de Oncología</p>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 30px; text-align: center; font-size: 12px; color: #666;">
-                        <p>Documento generado el ${new Date().toLocaleDateString('es-MX')} con OncoGuía Pro v8.0</p>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('documentPreview').innerHTML = content;
-            currentDocumentData = { type: 'instructions', content: content, patient: patientData };
-        }
-        
-        // Helper functions
-        function getPatientData() {
-            const weight = parseFloat(document.getElementById('patientWeight').value) || 0;
-            const height = parseFloat(document.getElementById('patientHeight').value) || 0;
-            const age = parseInt(document.getElementById('patientAge').value) || 0;
-            const gender = document.getElementById('patientGender').value;
-            const creatinine = parseFloat(document.getElementById('patientCreatinine').value) || 0;
-            
-            let bsa = 0;
-            if (weight > 0 && height > 0) {
-                bsa = Math.sqrt((weight * height) / 3600);
-            }
-            
-            let crcl = 0;
-            if (age > 0 && weight > 0 && creatinine > 0 && gender) {
-                const genderFactor = gender === 'F' ? 0.85 : 1.0;
-                crcl = ((140 - age) * weight * genderFactor) / (72 * creatinine);
-            }
-            
-            return {
-                name: document.getElementById('patientName').value,
-                age: age,
-                gender: gender,
-                weight: weight,
-                height: height,
-                creatinine: creatinine,
-                bsa: bsa.toFixed(2),
-                crcl: crcl ? crcl.toFixed(0) : null
-            };
-        }
-        
-        function getSchemeData(scheme) {
-            const schemes = {
-                'ac': {
-                    name: 'AC (Doxorrubicina + Ciclofosfamida)',
-                    frequency: 'Cada 21 días',
-                    drugs: [
-                        { name: 'Doxorrubicina', dose: '60 mg/m²', route: 'IV', time: '15 min', day: '1' },
-                        { name: 'Ciclofosfamida', dose: '600 mg/m²', route: 'IV', time: '30 min', day: '1' }
-                    ]
-                },
-                'folfox': {
-                    name: 'FOLFOX',
-                    frequency: 'Cada 14 días',
-                    drugs: [
-                        { name: 'Oxaliplatino', dose: '85 mg/m²', route: 'IV', time: '2 h', day: '1' },
-                        { name: 'Leucovorina', dose: '400 mg/m²', route: 'IV', time: '2 h', day: '1' },
-                        { name: '5-FU bolo', dose: '400 mg/m²', route: 'IV', time: 'bolo', day: '1' },
-                        { name: '5-FU infusión', dose: '2400 mg/m²', route: 'IV', time: '46 h', day: '1-2' }
-                    ]
-                },
-                'trastuzumab_iv': {
-                    name: 'Trastuzumab IV',
-                    frequency: 'Cada 21 días',
-                    drugs: [
-                        { name: 'Trastuzumab', dose: '8 mg/kg (carga), 6 mg/kg (mant)', route: 'IV', time: '90 min (carga), 30 min (mant)', day: '1' }
-                    ]
-                },
-                'phesgo': {
-                    name: 'Phesgo (Pertuzumab + Trastuzumab SC)',
-                    frequency: 'Cada 21 días',
-                    drugs: [
-                        { name: 'Phesgo', dose: '1200/600 mg (carga), 600/600 mg (mant)', route: 'SC', time: '5-8 min', day: '1' }
-                    ]
-                }
-            };
-            
-            return schemes[scheme] || { name: 'Esquema personalizado', frequency: 'Según protocolo', drugs: [] };
-        }
-        
-        function calculateDoses(schemeData, patientData) {
-            return schemeData.drugs.map(drug => {
-                let calculatedDose = drug.dose;
-                if (drug.dose.includes('mg/m²')) {
-                    const dosePerM2 = parseFloat(drug.dose.match(/[\d.]+/)[0]);
-                    const totalDose = (dosePerM2 * parseFloat(patientData.bsa)).toFixed(1);
-                    calculatedDose = `${totalDose} mg`;
-                }
-                return { ...drug, calculatedDose };
-            });
-        }
-        
-        function generateMedicalInstructions(schemeData, doses) {
-            return `
-                <h2>Indicaciones Médicas</h2>
-                <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                    <h3>Premedicación</h3>
-                    <ul>
-                        <li>Ondansetrón 8 mg IV 30 min antes</li>
-                        <li>Dexametasona 12 mg IV 30 min antes</li>
-                        <li>Ranitidina 50 mg IV 30 min antes</li>
-                    </ul>
-                </div>
-                
-                <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                    <h3>Medicamentos y Dosis</h3>
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <thead>
-                            <tr style="background: #dc2626; color: white;">
-                                <th style="padding: 10px; text-align: left;">Medicamento</th>
-                                <th style="padding: 10px; text-align: left;">Dosis</th>
-                                <th style="padding: 10px; text-align: left;">Vía</th>
-                                <th style="padding: 10px; text-align: left;">Tiempo</th>
-                                <th style="padding: 10px; text-align: left;">Día</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${doses.map(drug => `
-                                <tr style="border-bottom: 1px solid #ddd;">
-                                    <td style="padding: 10px;">${drug.name}</td>
-                                    <td style="padding: 10px;">${drug.calculatedDose || drug.dose}</td>
-                                    <td style="padding: 10px;">${drug.route}</td>
-                                    <td style="padding: 10px;">${drug.time}</td>
-                                    <td style="padding: 10px;">${drug.day}</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                    <h3>Monitoreo</h3>
-                    <ul>
-                        <li>Signos vitales cada 30 min durante infusión</li>
-                        <li>Vigilar reacciones de hipersensibilidad</li>
-                        <li>BH y QS previo a cada ciclo</li>
-                    </ul>
-                </div>
-            `;
-        }
-        
-        function generatePatientGuide(schemeData, doses) {
-            return `
-                <h2>Información para el Paciente</h2>
-                <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                    <h3>¿Qué es la Quimioterapia?</h3>
-                    <p>La quimioterapia son medicamentos que ayudan a combatir las células cancerosas. El esquema ${schemeData.name} se administra ${schemeData.frequency}.</p>
-                </div>
-                
-                <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                    <h3>Efectos Secundarios Comunes</h3>
-                    <ul>
-                        <li><strong>Náusea y vómito:</strong> Tome los medicamentos prescritos según indicación</li>
-                        <li><strong>Cansancio:</strong> Es normal, descanse cuando lo necesite</li>
-                        <li><strong>Caída del cabello:</strong> Temporal, crecerá nuevamente</li>
-                        <li><strong>Cambios en el apetito:</strong> Coma porciones pequeñas y frecuentes</li>
-                    </ul>
-                </div>
-                
-                <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                    <h3>Cuidados en Casa</h3>
-                    <ul>
-                        <li>Lávese las manos frecuentemente</li>
-                        <li>Evite lugares con muchas personas</li>
-                        <li>Tome mucha agua (2-3 litros al día)</li>
-                        <li>Use protector solar</li>
-                        <li>Mantenga una buena higiene bucal</li>
-                    </ul>
-                </div>
-                
-                <div style="background: #f8d7da; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                    <h3>⚠️ Cuándo Contactar al Médico</h3>
-                    <p><strong>Llame inmediatamente al (612) 129-71-71 si presenta:</strong></p>
-                    <ul>
-                        <li>Fiebre mayor a 38°C</li>
-                        <li>Sangrado anormal</li>
-                        <li>Dificultad para respirar</li>
-                        <li>Vómito que no para</li>
-                        <li>Diarrea severa</li>
-                    </ul>
-                </div>
-                
-                <div style="background: #d1ecf1; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                    <h3>Timing de Laboratorios</h3>
-                    <div style="background: #f8d7da; padding: 10px; border-radius: 4px; margin: 10px 0;">
-                        <p><strong>⚠️ IMPORTANTE:</strong></p>
-                        <p><strong>Cuándo SÍ hacerse laboratorios:</strong></p>
-                        <ul>
-                            <li>1-3 días antes del siguiente ciclo</li>
-                            <li>Cuando el médico lo solicite específicamente</li>
-                        </ul>
-                        <p><strong>Cuándo NO hacerse laboratorios:</strong></p>
-                        <ul>
-                            <li>Entre los días 5-14 después de la quimio</li>
-                            <li>Por curiosidad o ansiedad</li>
-                        </ul>
-                        <p><em>Los valores bajos entre ciclos son normales y esperados.</em></p>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function getLabPanelData(panel) {
-            const panels = {
-                'basic': {
-                    name: 'Panel Básico',
-                    tests: ['Biometría Hemática Completa', 'Química Sanguínea', 'Pruebas de Función Hepática', 'Pruebas de Función Renal']
-                },
-                'pre_chemo': {
-                    name: 'Pre-Quimioterapia',
-                    tests: ['Biometría Hemática Completa', 'Química Sanguínea', 'Pruebas de Función Hepática', 'Pruebas de Función Renal', 'Tiempo de Protrombina', 'Tiempo de Tromboplastina']
-                },
-                'follow_up': {
-                    name: 'Seguimiento',
-                    tests: ['Biometría Hemática Completa', 'Química Sanguínea', 'Pruebas de Función Hepática', 'CEA', 'CA 19-9', 'CA 15-3']
-                },
-                'toxicity': {
-                    name: 'Evaluación Toxicidad',
-                    tests: ['Biometría Hemática Completa', 'Química Sanguínea', 'CPK', 'LDH', 'Magnesio', 'Fosfatasa Alcalina']
-                }
-            };
-            
-            return panels[panel] || { name: 'Panel Personalizado', tests: [] };
-        }
-        
-        function getLabPreparation(panel) {
-            return [
-                'Ayuno de 8-12 horas (solo agua simple)',
-                'Suspender multivitamínicos 24 horas antes',
-                'Informar medicamentos actuales',
-                'Traer identificación oficial',
-                'Acudir con acompañante si es posible'
-            ];
-        }
-        
-        function getImagingStudyData(type, region, contrast) {
-            const studies = {
-                'ct': { modality: 'Tomografía Computada', abbrev: 'TC' },
-                'mri': { modality: 'Resonancia Magnética', abbrev: 'RM' },
-                'us': { modality: 'Ultrasonido', abbrev: 'US' },
-                'xray': { modality: 'Radiografía', abbrev: 'RX' },
-                'pet': { modality: 'PET-CT', abbrev: 'PET-CT' }
-            };
-            
-            const regions = {
-                'thorax': 'Tórax',
-                'abdomen': 'Abdomen',
-                'pelvis': 'Pelvis',
-                'tap': 'Tórax, Abdomen y Pelvis',
-                'brain': 'Cerebro',
-                'neck': 'Cuello',
-                'extremities': 'Extremidades'
-            };
-            
-            const contrasts = {
-                'none': 'Simple (sin contraste)',
-                'iv': 'Con contraste intravenoso',
-                'oral': 'Con contraste oral',
-                'both': 'Con contraste IV y oral'
-            };
-            
-            const study = studies[type] || { modality: 'Estudio', abbrev: 'EST' };
-            const regionName = regions[region] || 'Región no especificada';
-            const contrastName = contrasts[contrast] || 'Contraste no especificado';
-            
-            return {
-                modality: study.modality,
-                region: regionName,
-                contrast: contrastName,
-                fullName: `${study.abbrev} ${regionName} ${contrastName}`
-            };
-        }
-        
-        function getImagingPreparation(type, contrast) {
-            let preparation = [];
-            
-            if (type === 'ct' || type === 'pet') {
-                preparation.push('Ayuno de 4-6 horas antes del estudio');
-            }
-            
-            if (contrast === 'iv' || contrast === 'both') {
-                preparation.push('Creatinina sérica ≤ 1.5 mg/dL (máximo 7 días)');
-                preparation.push('Hidratación abundante post-estudio');
-                preparation.push('Suspender metformina 48 horas previas');
-                preparation.push('Informar alergias previas a contrastes');
-            }
-            
-            if (contrast === 'oral' || contrast === 'both') {
-                preparation.push('Tomar contraste oral según indicaciones');
-            }
-            
-            if (type === 'mri') {
-                preparation.push('Remover todos los objetos metálicos');
-                preparation.push('Informar marcapasos o implantes metálicos');
-                preparation.push('Informar claustrofobia');
-            }
-            
-            if (type === 'pet') {
-                preparation.push('Glucosa en ayunas < 150 mg/dL');
-                preparation.push('Evitar ejercicio 24 horas previas');
-                preparation.push('Suspender medicamentos para diabetes (consultar)');
-            }
-            
-            preparation.push('Traer identificación oficial');
-            preparation.push('Llegar 30 minutos antes de la cita');
-            
-            return preparation;
-        }
-        
-        function getInstructionsTypeName(type) {
-            const types = {
-                'post_chemo': 'Post-Quimioterapia',
-                'pre_surgery': 'Pre-Quirúrgicas',
-                'discharge': 'Alta Hospitalaria',
-                'follow_up': 'Seguimiento',
-                'custom': 'Personalizadas'
-            };
-            
-            return types[type] || 'Indicaciones Generales';
-        }
-        
-        // Export functions
-        function exportToPDF() {
-            if (!currentDocumentData.content) {
-                alert('Primero debe generar un documento');
+            if (!patientName) {
+                alert('Por favor ingrese el nombre del paciente');
                 return;
             }
-            
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            
-            // Simple text-based PDF export
-            const lines = currentDocumentData.content
-                .replace(/<[^>]*>/g, '\n')
-                .split('\n')
-                .filter(line => line.trim() !== '');
-            
-            let y = 20;
-            lines.forEach(line => {
-                if (y > 280) {
-                    pdf.addPage();
-                    y = 20;
+
+            const medications = [];
+            document.querySelectorAll('.medication-item').forEach(item => {
+                const name = item.querySelector('.medication-name').value;
+                const presentation = item.querySelector('.medication-presentation').value;
+                const quantity = item.querySelector('.medication-quantity').value;
+                const instructions = item.querySelector('.medication-instructions').value;
+                
+                if (name) {
+                    medications.push({ name, presentation, quantity, instructions });
                 }
-                pdf.text(line.substring(0, 80), 10, y);
-                y += 7;
             });
-            
-            const fileName = `${currentDocumentData.patient.name.replace(/\s+/g, '_')}_${currentDocumentData.type}_${new Date().toISOString().split('T')[0]}.pdf`;
-            pdf.save(fileName);
-        }
-        
-        function exportToJSON() {
-            if (!currentDocumentData) {
-                alert('Primero debe generar un documento');
+
+            if (medications.length === 0) {
+                alert('Por favor agregue al menos un medicamento');
                 return;
             }
+
+            let html = `
+                <div class="prescription-document">
+                    <div class="header text-center mb-8">
+                        <img src="https://www.jotform.com/uploads/jeanp27/form_files/Logo%20para%20membrete.684c557f007857.92019324.png" 
+                             alt="OncoTech" class="mx-auto h-16 mb-4">
+                        <h1 class="text-2xl font-bold primary-text">OncoTech</h1>
+                        <p class="text-sm text-gray-600">Normal Urbana 1367, Colonia Perla, La Paz, BCS</p>
+                        <p class="text-sm text-gray-600">Tel: (612) 129.71.71</p>
+                        <hr class="my-4">
+                    </div>
+
+                    <div class="prescription-header mb-6">
+                        <h2 class="text-xl font-bold mb-4">RECETA MÉDICA</h2>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div><strong>Paciente:</strong> ${patientName}</div>
+                            <div><strong>Fecha:</strong> ${date}</div>
+                        </div>
+                    </div>
+
+                    <div class="medications mb-8">
+                        <h3 class="text-lg font-bold mb-4">MEDICAMENTOS PRESCRITOS:</h3>
+                        ${medications.map((med, index) => `
+                            <div class="medication-item mb-6 p-4 border border-gray-200 rounded">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h4 class="font-bold text-lg">${index + 1}. ${med.name}</h4>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4 text-sm mb-2">
+                                    <div><strong>Presentación:</strong> ${med.presentation}</div>
+                                    <div><strong>Cantidad:</strong> ${med.quantity}</div>
+                                </div>
+                                <div class="text-sm">
+                                    <strong>Indicaciones:</strong> ${med.instructions}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="footer mt-8 pt-4 border-t">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-600">Dr. [Nombre del Médico]</p>
+                                <p class="text-sm text-gray-600">Cédula Profesional: ________</p>
+                                <p class="text-sm text-gray-600">Cédula Especialidad: ________</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="border-t border-gray-400 w-48 mx-auto mb-2"></div>
+                                <p class="text-sm text-gray-600">Firma del Médico</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 text-center mt-4">OncoTech - L-V 9:00 AM - 9:00 PM | Solo con cita previa</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('documentPreview').innerHTML = html;
+        }
+
+        function generateLabRequest() {
+            const patientName = document.getElementById('labPatientName').value;
+            const date = document.getElementById('labDate').value || new Date().toLocaleDateString('es-MX');
+            const instructions = document.getElementById('labInstructions').value;
+            const diagnosis = document.getElementById('labDiagnosis').value;
+
+            if (!patientName) {
+                alert('Por favor ingrese el nombre del paciente');
+                return;
+            }
+
+            const selectedTests = [];
+            document.querySelectorAll('.lab-test:checked').forEach(test => {
+                selectedTests.push(test.value);
+            });
+
+            if (selectedTests.length === 0) {
+                alert('Por favor seleccione al menos un estudio');
+                return;
+            }
+
+            let html = `
+                <div class="lab-request-document">
+                    <div class="header text-center mb-8">
+                        <img src="https://www.jotform.com/uploads/jeanp27/form_files/Logo%20para%20membrete.684c557f007857.92019324.png" 
+                             alt="OncoTech" class="mx-auto h-16 mb-4">
+                        <h1 class="text-2xl font-bold primary-text">OncoTech</h1>
+                        <p class="text-sm text-gray-600">Normal Urbana 1367, Colonia Perla, La Paz, BCS</p>
+                        <p class="text-sm text-gray-600">Tel: (612) 129.71.71</p>
+                        <hr class="my-4">
+                    </div>
+
+                    <div class="request-header mb-6">
+                        <h2 class="text-xl font-bold mb-4">SOLICITUD DE ESTUDIOS DE LABORATORIO</h2>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div><strong>Paciente:</strong> ${patientName}</div>
+                            <div><strong>Fecha:</strong> ${date}</div>
+                        </div>
+                    </div>
+
+                    <div class="tests mb-6">
+                        <h3 class="text-lg font-bold mb-4">ESTUDIOS SOLICITADOS:</h3>
+                        <ul class="list-disc list-inside">
+                            ${selectedTests.map(test => `<li class="mb-1">${test}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    ${instructions ? `
+                        <div class="instructions mb-6">
+                            <h3 class="text-lg font-bold mb-2">INDICACIONES ESPECIALES:</h3>
+                            <p class="text-sm">${instructions}</p>
+                        </div>
+                    ` : ''}
+
+                    ${diagnosis ? `
+                        <div class="diagnosis mb-6">
+                            <h3 class="text-lg font-bold mb-2">INDICACIÓN CLÍNICA:</h3>
+                            <p class="text-sm">${diagnosis}</p>
+                        </div>
+                    ` : ''}
+
+                    <div class="footer mt-8 pt-4 border-t">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-600">Dr. [Nombre del Médico]</p>
+                                <p class="text-sm text-gray-600">Cédula Profesional: ________</p>
+                                <p class="text-sm text-gray-600">Cédula Especialidad: ________</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="border-t border-gray-400 w-48 mx-auto mb-2"></div>
+                                <p class="text-sm text-gray-600">Firma del Médico</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 text-center mt-4">OncoTech - L-V 9:00 AM - 9:00 PM | Solo con cita previa</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('documentPreview').innerHTML = html;
+        }
+
+        function generateImageRequest() {
+            const patientName = document.getElementById('imagePatientName').value;
+            const date = document.getElementById('imageDate').value || new Date().toLocaleDateString('es-MX');
+            const imageType = document.getElementById('imageType').value;
+            const diagnosis = document.getElementById('imageDiagnosis').value;
+            const contrast = document.querySelector('input[name="contrast"]:checked')?.value || 'Sin contraste';
+
+            if (!patientName || !imageType) {
+                alert('Por favor complete los datos básicos');
+                return;
+            }
+
+            const selectedRegions = [];
+            document.querySelectorAll('.image-region:checked').forEach(region => {
+                selectedRegions.push(region.value);
+            });
+
+            if (selectedRegions.length === 0) {
+                alert('Por favor seleccione al menos una región anatómica');
+                return;
+            }
+
+            // Generate preparation instructions
+            let preparationInstructions = getPreparationInstructions(imageType, contrast);
+
+            let html = `
+                <div class="image-request-document">
+                    <div class="header text-center mb-8">
+                        <img src="https://www.jotform.com/uploads/jeanp27/form_files/Logo%20para%20membrete.684c557f007857.92019324.png" 
+                             alt="OncoTech" class="mx-auto h-16 mb-4">
+                        <h1 class="text-2xl font-bold primary-text">OncoTech</h1>
+                        <p class="text-sm text-gray-600">Normal Urbana 1367, Colonia Perla, La Paz, BCS</p>
+                        <p class="text-sm text-gray-600">Tel: (612) 129.71.71</p>
+                        <hr class="my-4">
+                    </div>
+
+                    <div class="request-header mb-6">
+                        <h2 class="text-xl font-bold mb-4">SOLICITUD DE ESTUDIO DE IMAGEN</h2>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div><strong>Paciente:</strong> ${patientName}</div>
+                            <div><strong>Fecha:</strong> ${date}</div>
+                        </div>
+                    </div>
+
+                    <div class="study-details mb-6">
+                        <h3 class="text-lg font-bold mb-4">ESTUDIO SOLICITADO:</h3>
+                        <div class="bg-gray-50 p-4 rounded">
+                            <div class="grid grid-cols-2 gap-4 text-sm mb-2">
+                                <div><strong>Tipo de estudio:</strong> ${imageType}</div>
+                                <div><strong>Contraste:</strong> ${contrast}</div>
+                            </div>
+                            <div class="text-sm">
+                                <strong>Región(es):</strong> ${selectedRegions.join(', ')}
+                            </div>
+                        </div>
+                    </div>
+
+                    ${contrast.includes('contraste IV') ? `
+                        <div class="creatinine-requirement mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
+                            <h4 class="font-bold mb-2 text-yellow-800">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>REQUISITO IMPORTANTE
+                            </h4>
+                            <p class="text-sm text-yellow-800">
+                                <strong>Se requiere valor de creatinina sérica reciente (&lt; 48 horas)</strong> para la administración de contraste intravenoso.
+                            </p>
+                        </div>
+                    ` : ''}
+
+                    <div class="preparation mb-6">
+                        <h3 class="text-lg font-bold mb-4">PREPARACIÓN DEL PACIENTE:</h3>
+                        <div class="text-sm">
+                            ${preparationInstructions}
+                        </div>
+                    </div>
+
+                    ${diagnosis ? `
+                        <div class="diagnosis mb-6">
+                            <h3 class="text-lg font-bold mb-2">INDICACIÓN CLÍNICA:</h3>
+                            <p class="text-sm">${diagnosis}</p>
+                        </div>
+                    ` : ''}
+
+                    <div class="footer mt-8 pt-4 border-t">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-600">Dr. [Nombre del Médico]</p>
+                                <p class="text-sm text-gray-600">Cédula Profesional: ________</p>
+                                <p class="text-sm text-gray-600">Cédula Especialidad: ________</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="border-t border-gray-400 w-48 mx-auto mb-2"></div>
+                                <p class="text-sm text-gray-600">Firma del Médico</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 text-center mt-4">OncoTech - L-V 9:00 AM - 9:00 PM | Solo con cita previa</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('documentPreview').innerHTML = html;
+        }
+
+        function getPreparationInstructions(imageType, contrast) {
+            let instructions = '';
+
+            switch(imageType) {
+                case 'Tomografía Computarizada (TC)':
+                    instructions = `
+                        <ul class="list-disc list-inside">
+                            <li>Ayuno de 4-6 horas antes del estudio</li>
+                            <li>Puede tomar agua hasta 2 horas antes</li>
+                            <li>Retire objetos metálicos (joyas, dentaduras postizas)</li>
+                    `;
+                    if (contrast.includes('oral')) {
+                        instructions += '<li>Tome el contraste oral según indicaciones del servicio de radiología</li>';
+                    }
+                    if (contrast.includes('IV')) {
+                        instructions += '<li>Hidratación adecuada 24 horas antes</li>';
+                        instructions += '<li>Traer creatinina sérica reciente</li>';
+                    }
+                    instructions += '</ul>';
+                    break;
+
+                case 'Resonancia Magnética (RM)':
+                    instructions = `
+                        <ul class="list-disc list-inside">
+                            <li>Retire TODOS los objetos metálicos</li>
+                            <li>Informe sobre marcapaso, clips, implantes metálicos</li>
+                            <li>No usar maquillaje (puede contener metales)</li>
+                            <li>Ropa cómoda sin cierres metálicos</li>
+                    `;
+                    if (contrast.includes('IV')) {
+                        instructions += '<li>Traer creatinina sérica reciente</li>';
+                    }
+                    instructions += '</ul>';
+                    break;
+
+                case 'Ultrasonido':
+                    instructions = `
+                        <ul class="list-disc list-inside">
+                            <li>Ayuno de 8 horas (para abdomen)</li>
+                            <li>Vejiga llena (para pelvis) - tomar 4-6 vasos de agua 1 hora antes</li>
+                            <li>No masticar chicle ni fumar</li>
+                        </ul>
+                    `;
+                    break;
+
+                case 'PET-CT':
+                    instructions = `
+                        <ul class="list-disc list-inside">
+                            <li>Ayuno de 12 horas (solo agua permitida)</li>
+                            <li>Glucosa en ayuno menor a 150 mg/dL</li>
+                            <li>Suspender ejercicio intenso 24 horas antes</li>
+                            <li>Ropa cómoda sin objetos metálicos</li>
+                            <li>Evitar masticar chicle o caramelos</li>
+                        </ul>
+                    `;
+                    break;
+
+                default:
+                    instructions = `
+                        <ul class="list-disc list-inside">
+                            <li>Seguir las indicaciones específicas del servicio de radiología</li>
+                            <li>Presentarse 30 minutos antes de la cita</li>
+                            <li>Traer estudios previos relacionados</li>
+                        </ul>
+                    `;
+            }
+
+            return instructions;
+        }
+
+        // Email functionality
+        document.getElementById('emailDocument').addEventListener('click', function() {
+            const content = document.getElementById('documentPreview').innerHTML;
+            if (content.includes('Complete los datos')) {
+                alert('Por favor genere un documento primero');
+                return;
+            }
+            document.getElementById('emailModal').classList.remove('hidden');
+            document.getElementById('emailModal').classList.add('flex');
+        });
+
+        document.getElementById('cancelEmail').addEventListener('click', function() {
+            document.getElementById('emailModal').classList.add('hidden');
+            document.getElementById('emailModal').classList.remove('flex');
+        });
+
+        document.getElementById('sendEmail').addEventListener('click', function() {
+            const recipientEmail = document.getElementById('recipientEmail').value;
+            const subject = document.getElementById('emailSubject').value;
+            const message = document.getElementById('emailMessage').value;
             
-            const jsonData = {
-                patient: currentDocumentData.patient,
-                documentType: currentDocumentData.type,
-                generatedDate: new Date().toISOString(),
-                content: currentDocumentData.content
-            };
+            if (!recipientEmail) {
+                alert('Por favor ingrese el email del destinatario');
+                return;
+            }
+
+            // Create mailto link
+            const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+            window.location.href = mailtoLink;
             
-            const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
+            document.getElementById('emailModal').classList.add('hidden');
+            document.getElementById('emailModal').classList.remove('flex');
+        });
+
+        // JSON Export
+        document.getElementById('exportJSON').addEventListener('click', function() {
+            const content = document.getElementById('documentPreview').innerHTML;
+            if (content.includes('Complete los datos')) {
+                alert('Por favor genere un documento primero');
+                return;
+            }
+
+            const activeTab = document.querySelector('.tab-content.active').id;
+            let data = {};
+
+            switch(activeTab) {
+                case 'quimioterapia':
+                    data = {
+                        type: 'chemotherapy',
+                        patient: {
+                            name: document.getElementById('patientName').value,
+                            age: document.getElementById('age').value,
+                            gender: document.getElementById('gender').value,
+                            weight: document.getElementById('weight').value,
+                            height: document.getElementById('height').value,
+                            creatinine: document.getElementById('creatinine').value
+                        },
+                        scheme: document.getElementById('chemoScheme').value,
+                        docType: document.querySelector('input[name="docType"]:checked').value,
+                        generated: new Date().toISOString()
+                    };
+                    break;
+                case 'recetas':
+                    const medications = [];
+                    document.querySelectorAll('.medication-item').forEach(item => {
+                        const name = item.querySelector('.medication-name').value;
+                        if (name) {
+                            medications.push({
+                                name: name,
+                                presentation: item.querySelector('.medication-presentation').value,
+                                quantity: item.querySelector('.medication-quantity').value,
+                                instructions: item.querySelector('.medication-instructions').value
+                            });
+                        }
+                    });
+                    data = {
+                        type: 'prescription',
+                        patient: { name: document.getElementById('prescPatientName').value },
+                        medications: medications,
+                        generated: new Date().toISOString()
+                    };
+                    break;
+            }
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${currentDocumentData.patient.name.replace(/\s+/g, '_')}_${currentDocumentData.type}_${new Date().toISOString().split('T')[0]}.json`;
+            a.download = `oncotech_document_${Date.now()}.json`;
+            document.body.appendChild(a);
             a.click();
+            document.body.removeChild(a);
             URL.revokeObjectURL(url);
-        }
-        
-        function sendEmail() {
-            if (!currentDocumentData.content) {
-                alert('Primero debe generar un documento');
-                return;
-            }
-            
-            const subject = `Documento Médico - ${currentDocumentData.patient.name}`;
-            const body = `Estimado paciente,\n\nAdjunto encontrará su documento médico generado en OncoTech.\n\nSaludos cordiales,\nOncoTech - Centro de Oncología`;
-            
-            const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.location.href = mailtoLink;
-        }
-        
-        // Event listeners
+        });
+
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize theme
-            initializeTheme();
-            
-            // Load URL parameters
-            loadURLParameters();
-            
-            // Patient data change listeners
-            ['patientName', 'patientAge', 'patientGender', 'patientWeight', 'patientHeight', 'patientCreatinine'].forEach(id => {
-                document.getElementById(id).addEventListener('input', function() {
-                    calculateAutomaticValues();
-                    updateGenerateButton();
-                });
+            // Set current date for all date inputs
+            const today = new Date().toISOString().split('T')[0];
+            document.querySelectorAll('input[type="date"]').forEach(input => {
+                input.value = today;
             });
-            
-            // Document type change listener
-            document.getElementById('documentType').addEventListener('change', handleDocumentTypeChange);
-            
-            // Button listeners
-            document.getElementById('generateBtn').addEventListener('click', generateDocument);
-            document.getElementById('pdfBtn').addEventListener('click', exportToPDF);
-            document.getElementById('emailBtn').addEventListener('click', sendEmail);
-            document.getElementById('jsonBtn').addEventListener('click', exportToJSON);
-            
-            // Dynamic content listeners
-            document.addEventListener('change', function(e) {
-                if (e.target.id === 'contrast') {
-                    const warning = document.getElementById('contrastWarning');
-                    if (warning) {
-                        const needsContrast = e.target.value === 'iv' || e.target.value === 'both';
-                        warning.classList.toggle('hidden', !needsContrast);
-                    }
+
+            // Prefill from URL parameters
+            prefillData();
+
+            // Attach remove handlers for medications
+            attachRemoveHandlers();
+
+            // Auto-calculate on input changes
+            ['weight', 'height', 'age', 'creatinine'].forEach(field => {
+                const element = document.getElementById(field);
+                if (element) {
+                    element.addEventListener('input', function() {
+                        // Trigger recalculation if scheme is selected
+                        const scheme = document.getElementById('chemoScheme').value;
+                        if (scheme) {
+                            generateChemotherapy();
+                        }
+                    });
                 }
             });
         });
     </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"94f4c5f54b1d68b9","serverTiming":{"name":{"cfExtPri":true,"cfEdge":true,"cfOrigin":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"version":"2025.6.2","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
 </body>
 </html>
     <script id="html_badge_script1">
         window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
-            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDlOnHXGa0LcFVQXRUSYhejdhJsq6R42MJpEGEjtrvWpYQYLwcoUrKAPchONSRvbSiE7aI%2FH1PrME84SMuL%2FXjUmv75o6iA5DUMcbDNw0XdoAWexBjRGuOH0eZY9KX5qSfDZtrcxHWSpF%2FhMfTUSROwl0NnDnFhotVf1wSxh%2F7uQBqHz3hXk6f5CgdBKVIS4ORTQUPGW8NOneQXMV1eS7BhTODDjusx%2FJoiixFlHxR%2FWdV7LzC3BTGabj%2BIvpBGe%2BZuz2hr57I7xgtFjxkqbomexKA57k6Yx3%2Bdodu9hwr7oAQNWq20zRx3XT3PhQ5NoSwNKft%2FJL9jhbar9JlK3nji%2BSuzE6Z0Z0u0n9kpkScgvCS%2B76z%2FeUIJY8Eu7pQnKgzoPuXhj%2FHu7HvY1fHUgH5OipR8kKmvPCIeDwkvhYbM0oaheTfDqnk3hCFHJ0wfB6t0vCJVJWZVtQuLR1G3GFgHN5dOFDdHvNVrtTZQoQOKbzt%2BqUsYY%2BVtzOUt%2BVwAyP6tdbw4X76K9dGmGpnht3TNc%3D";
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDmf94bQg43TTDxYmZUYMZse%2FuRgEc1Ungq76RGNe7bZxqc%2FiqTEYhMI5q9lg8I1eQ33nMxQ5YvrYtOtoRJeiUf7UkhZ8JH4Gk5xkyz5sEuJVwyBR6UPTRVmQhcnCdlgwvfy%2BOzbdNjDv7bFC8gJYyT7d8ypRhvsaQecrZpPjHAy3jJcN7BxKHVybC%2FmEovXq3%2F0DGC9pdBG81iRuIAdrxP19EfXVqHb2QaGLdudQ9iwVa8SZQL3ZcOhsm3kvs9wbVo2EG7VtRKO8qqqh%2FQJhUHIlGoRPlyi9sezrP2VN2nvlrzcyBr6UfsVv0i7Ea6ntNj%2BnxriBf5lML639wD8UyY4hN3ssOGOq7SIDD4lKpS9jtBajqXQZMyYRpGqyVVa2%2F65YG1O7UOIBxXE29Het4p9iqIc53Y4sLZ%2B6B7%2FhyfVkbzxBYUr4S4Dm5VXUPVWhu%2BUVeB2wG%2B6OgJ1HzCNLRafYjvqMLCTkQ0ZvvBYv81%2FwjoCKOrl5UqjylAIxFjIiVVSGolGX7U2HpHcw5Jg1ors%3D";
         window.__genspark_locale = "es-ES";
-        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDlOnHXGa0LcFVQXRUSYhejdhJsq6R42MJpEGEjtrvWpYQYLwcoUrKAPchONSRvbSiE7aI/H1PrME84SMuL/XjUmv75o6iA5DUMcbDNw0XdoAWexBjRGuOH0eZY9KX5qSfDZtrcxHWSpF/hMfTUSROwl0NnDnFhotVf1wSxh/7uQBqHz3hXk6f5CgdBKVIS4ORTQUPGW8NOneQXMV1eS7BhTODDjusx/JoiixFlHxR/WdV7LzC3BTGabj+IvpBGe+Zuz2hr57I7xgtFjxkqbomexKA57k6Yx3+dodu9hwr7oAQNWq20zRx3XT3PhQ5NoSwNKft/JL9jhbar9JlK3nji+SuzE6Z0Z0u0n9kpkScgvCS+76z/eUIJY8Eu7pQnKgzoPuXhj/Hu7HvY1fHUgH5OipR8kKmvPCIeDwkvhYbM0oaheTfDqnk3hCFHJ0wfB6t0vCJVJWZVtQuLR1G3GFgHN5dOFDdHvNVrtTZQoQOKbzt+qUsYY+VtzOUt+VwAyP6tdbw4X76K9dGmGpnht3TNc=";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDmf94bQg43TTDxYmZUYMZse/uRgEc1Ungq76RGNe7bZxqc/iqTEYhMI5q9lg8I1eQ33nMxQ5YvrYtOtoRJeiUf7UkhZ8JH4Gk5xkyz5sEuJVwyBR6UPTRVmQhcnCdlgwvfy+OzbdNjDv7bFC8gJYyT7d8ypRhvsaQecrZpPjHAy3jJcN7BxKHVybC/mEovXq3/0DGC9pdBG81iRuIAdrxP19EfXVqHb2QaGLdudQ9iwVa8SZQL3ZcOhsm3kvs9wbVo2EG7VtRKO8qqqh/QJhUHIlGoRPlyi9sezrP2VN2nvlrzcyBr6UfsVv0i7Ea6ntNj+nxriBf5lML639wD8UyY4hN3ssOGOq7SIDD4lKpS9jtBajqXQZMyYRpGqyVVa2/65YG1O7UOIBxXE29Het4p9iqIc53Y4sLZ+6B7/hyfVkbzxBYUr4S4Dm5VXUPVWhu+UVeB2wG+6OgJ1HzCNLRafYjvqMLCTkQ0ZvvBYv81/wjoCKOrl5UqjylAIxFjIiVVSGolGX7U2HpHcw5Jg1ors=";
     </script>
     
     <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
